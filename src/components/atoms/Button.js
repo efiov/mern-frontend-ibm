@@ -1,5 +1,8 @@
-const Button = ({ label }) => {
-  return <button>{label}</button>;
-};
+'use client'
 
-export default Button;
+import Button from '@mui/material/Button'
+const ButtonAtom = ({ label }) => {
+  return <Button variant="contained">{label}</Button>
+}
+
+export default ButtonAtom
