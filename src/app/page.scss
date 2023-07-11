@@ -1,0 +1,9 @@
+//import fonts
+@import url("https://fonts.googleapis.com/css2?family=Caprasimo&family=Ysabeau+Office:wght@200&display=swap");
+
+* {
+  font-family: "Ysabeau Office", sans-serif;
+}
+
+@import "./sass/register";
+@import "./sass/extends";

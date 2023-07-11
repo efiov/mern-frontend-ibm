@@ -1,14 +1,14 @@
-'use client'
-import { TextField } from '@mui/material'
-const Input = ({ label, defaultLabel }) => {
-  return (
-    <TextField
-      label={label}
-      id="Input"
-      defaultValue={defaultLabel}
-      size="small"
-    />
-  )
-}
+"use client";
 
-export default Input
+const InputAtom = ({ id, placeholder }) => {
+  return (
+    <input
+      type="text"
+      id={id}
+      className="input-text"
+      placeholder={placeholder}
+    />
+  );
+};
+
+export default InputAtom;

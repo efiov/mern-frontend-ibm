@@ -1,21 +1,13 @@
 import ButtonAtom from "../atoms/Button";
-import { FiEdit } from "react-icons/fi";
 import InputAtom from "../atoms/Input";
-const RegisterForm = (props) => {
+const LoginForm = (props) => {
   return (
     <div className="col-sm-7 bg-color align-self-center">
       <div className="form-section">
         <div className="title"></div>
-        <h3>Create a new account</h3>
+        <h3>Login into your account</h3>
         <div className="register-inner-form"></div>
         <form method="GET">
-          <div className="form-group form-box">
-            <InputAtom id="name" placeholder="Name" />
-            <i className="icon">
-              {" "}
-              <FiEdit />{" "}
-            </i>
-          </div>
           <div className="form-group form-box">
             <InputAtom id="email" placeholder="Email" />
           </div>
@@ -24,7 +16,7 @@ const RegisterForm = (props) => {
           </div>
 
           <div className="form-group">
-            <ButtonAtom label="Register" />
+            <ButtonAtom label="Login" />
           </div>
         </form>
       </div>
@@ -32,4 +24,4 @@ const RegisterForm = (props) => {
   );
 };
 
-export default RegisterForm;
+export default LoginForm;

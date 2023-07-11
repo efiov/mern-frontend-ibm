@@ -1,8 +1,7 @@
-'use client'
-
-import Button from '@mui/material/Button'
+"use client";
+import "bootstrap/dist/css/bootstrap.css";
 const ButtonAtom = ({ label }) => {
-  return <Button variant="contained">{label}</Button>
-}
+  return <button className="btn primary-btn">{label}</button>;
+};
 
-export default ButtonAtom
+export default ButtonAtom;

@@ -1,25 +1,33 @@
-import Image from 'next/image'
-import styles from './page.module.css'
-import Button from '../components/atoms/Button'
-import Input from '../components/atoms/Input'
-import SearchBar from '../components/molecules/SearchBar'
-import Header from '../components/organisms/Header'
+import styles from "./page.module.css";
+import "./page.scss";
+import "./assets/bg_img.jpg";
+import React from "react";
+
+import BaseRegister from "../components/organisms/BaseRegister";
+import LoginForm from "@/components/organisms/Login";
+import RegisterForm from "@/components/organisms/Register";
+
+import "bootstrap/dist/css/bootstrap.css";
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
+      <div className="form">
+        <div className="container">
+          <div className="row register-box">
+            <BaseRegister />
+            <RegisterForm />
+          </div>
+        </div>
       </div>
-      <div>
-        <Input label="Input" />
+      <div className="form">
+        <div className="container">
+          <div className="row register-box">
+            <BaseRegister />
+            <LoginForm />
+          </div>
+        </div>
       </div>
-      <Button label="Button" />
-      <SearchBar />
-      <Header />
     </main>
-  )
+  );
 }
