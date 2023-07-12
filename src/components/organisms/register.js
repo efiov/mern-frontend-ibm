@@ -5,34 +5,34 @@ import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Input from '../atoms/Input'
+import Button from '../atoms/Button'
 import ButtonAtom from '../atoms/Button'
 import { useState } from 'react'
-
-async function registerUser(credentials) {
-  console.log(credentials)
-  return fetch('http://localhost:3001/register', {
-    method: 'POST',
-
-    headers: {
-      'Content-Type': 'application/json',
-    },
-
-    body: JSON.stringify(credentials),
-  }).then((data) => data.json())
-}
 
 export default function Register() {
   const [username, setUserName] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState()
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log(token)
-    const token = await registerUser({
-      username,
-      email,
-    })
-    setToken(token)
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const data = {
+      name: username,
+      email: email,
+      password: password,
+    }
+    const JSONdata = JSON.stringify(data)
+    const endpoint = 'http://localhost:3001/register'
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSONdata,
+    }
+    const response = await fetch(endpoint, options)
+    const result = await response.json()
+    console.log(result)
   }
   return (
     <Card sx={{ minWidth: 300 }}>
@@ -84,9 +84,7 @@ export default function Register() {
           </div>
           <div></div>
         </div>
-        <CardActions style={{ justifyContent: 'flex-end' }}>
-          <ButtonAtom label="Register" onSubmit={!handleSubmit} />
-        </CardActions>
+        <Button label="Register" onClick={handleSubmit} />
       </CardContent>
     </Card>
   )

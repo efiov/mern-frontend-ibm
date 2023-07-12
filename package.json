@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "server": "node server/server.js"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -17,5 +18,8 @@
     "next": "^13.4.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "express": "^4.18.2"
   }
 }
