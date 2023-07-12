@@ -1,0 +1,138 @@
+.form {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  @extend .position-relative;
+  @extend .text-center;
+
+  .register-box {
+    max-width: 960px;
+    margin: 0 auto;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+  }
+
+  .bg-img {
+    padding: 0;
+    border-radius: 10px 0 0 10px;
+    background: rgba(0, 0, 0, 0.04)
+      url(http://localhost:3000/_next/static/media/bg_img.a5be0b1f.jpg) top left
+      repeat;
+    background-size: cover;
+    top: 0;
+    bottom: 0;
+    opacity: 1;
+  }
+  .info {
+    height: 450px;
+    position: relative;
+  }
+  .logo {
+    text-align: left;
+    margin: 30px;
+  }
+
+  .btn-section {
+    position: absolute;
+    top: 40%;
+    right: 0;
+    margin-bottom: 0;
+  }
+  .link-btn {
+    font-size: 12px;
+    @extend .font-bold;
+  }
+
+  .link-btn.active {
+    background-color: #ff214f;
+    color: #b578ff;
+  }
+
+  .btn-primary {
+    @extend .text-center;
+    line-height: 30px;
+    width: 100px;
+    text-transform: uppercase;
+    border-radius: 50px 0 0 50px;
+    margin-bottom: 15px;
+    border: none;
+    &:focus {
+      outline: none;
+      box-shadow: none;
+    }
+    &:hover {
+      background: #5151dc;
+    }
+  }
+
+  .form-section {
+    @extend .text-center;
+    max-width: 500px;
+    margin: 0 auto;
+    @extend .width-100;
+  }
+  .title {
+    margin: 10px 0 50px 0;
+  }
+  h3 {
+    font-size: 25px;
+
+    color: #505050;
+    font-family: "Caprasimo";
+  }
+
+  .register-inner-form {
+    @extend .position-relative;
+    color: #979797;
+  }
+  .form-box {
+    float: right;
+    @extend .width-100;
+    @extend .position-relative;
+  }
+
+  .icon {
+    position: absolute;
+    right: 25px;
+    top: 15px;
+  }
+  .input-text {
+    font-size: 14px;
+    outline: none;
+    color: #616161;
+    border-radius: 50px;
+    border: 1px solid transparent;
+    @extend .background;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    padding: 11px 45px 11px 20px;
+    @extend .width-100;
+    margin-bottom: 10px;
+  }
+
+  .form-group {
+    padding: 10px;
+  }
+  .primary-btn {
+    background: #5d0da7;
+    @extend .width-100;
+    border: none;
+    color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    padding: 10px 30px 9px 30px;
+    cursor: pointer;
+    height: 45px;
+    border-radius: 50px;
+    margin-top: 20px;
+    font-family: "Caprasimo";
+
+    &:hover {
+      background: #5151dc;
+    }
+  }
+
+  .default-bg {
+    @extend .background;
+    color: #342f2f;
+  }
+}

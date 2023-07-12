@@ -1,5 +1,11 @@
-const Button = ({ label }) => {
-  return <button>{label}</button>;
+"use client";
+import "bootstrap/dist/css/bootstrap.css";
+const ButtonAtom = ({ label, type }) => {
+  return (
+    <button className="btn primary-btn" type={type}>
+      {label}
+    </button>
+  );
 };
 
-export default Button;
+export default ButtonAtom;

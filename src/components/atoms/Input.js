@@ -1,5 +1,17 @@
-const Input = () => {
-  return <input type="text" />;
+"use client";
+
+const InputAtom = ({ id, name, type, label, placeholder }) => {
+  return (
+    <input
+      label={label}
+      id={id}
+      name={name}
+      type={type}
+      className="input-text"
+      placeholder={placeholder}
+      required
+    />
+  );
 };
 
-export default Input;
+export default InputAtom;
