@@ -42,7 +42,12 @@ export default function RegisterFormForm() {
             <InputAtom id="email" name="email" placeholder="Email" />
           </div>
           <div className="form-group form-box">
-            <InputAtom id="password" name="password" type="password" placeholder="Password" />
+            <InputAtom
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
           </div>
 
           <div className="form-group">
