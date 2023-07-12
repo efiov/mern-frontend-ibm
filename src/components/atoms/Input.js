@@ -1,12 +1,15 @@
 "use client";
 
-const InputAtom = ({ id, placeholder }) => {
+const InputAtom = ({ id, name, type, label, placeholder }) => {
   return (
     <input
-      type="text"
+      label={label}
       id={id}
+      name={name}
+      type={type}
       className="input-text"
       placeholder={placeholder}
+      required
     />
   );
 };
