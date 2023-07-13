@@ -21,10 +21,10 @@ export default function FormDialog() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
-      name: event.target.name.value,
+      name,
       date: selectedDate,
-      type: event.target.type.value,
-      location: event.target.location.value,
+      type,
+      location,
     };
     const JSONdata = JSON.stringify(data);
     const endpoint = "http://localhost:3001/create";
@@ -40,26 +40,46 @@ export default function FormDialog() {
     console.log(result);
   };
 
+  //dialog buttons handlers
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
+    setName("");
+    setSelectedDate("");
+    setType("");
+    setLocation("");
     setOpen(false);
   };
 
+  //types of eveniment that can be selected from the backend menu
   const typesOfEveniment = [
-    { label: "Birthday" },
-    { label: "Wedding" },
-    { label: "Party" },
-    { label: "Conference" },
-    { label: "Meeting" },
-    { label: "Other" },
+    "Movie",
+    "Theater",
+    "Concert",
+    "Festival",
+    "Party",
+    "Other",
   ];
+  const isOptionEqualToValue = (option, value) => {
+    return option.label === value.label;
+  };
 
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [selectedDate, setSelectedDate] = useState();
+  const [name, setName] = useState();
+  const [type, setType] = useState();
+  const [location, setLocation] = useState();
+  console.log(name);
   console.log(selectedDate);
+  console.log(type);
+  console.log(location);
+
+  //check if all fields are filled in
+  const handleBlankFields = () => {
+    const isAnyFieldBlank = !name || !type || !location || !selectedDate;
+    console.log(isAnyFieldBlank);
+    return !isAnyFieldBlank;
+  };
 
   return (
     <div>
@@ -76,7 +96,11 @@ export default function FormDialog() {
               Please enter the name of the eveniment.
             </DialogContentText>
             <div className="form-group form-box">
-              <InputAtom id="name" label="Eveniment Name" />
+              <InputAtom
+                id="name"
+                label="Eveniment Name"
+                onChange={(newValue) => setName(newValue)}
+              />
             </div>
           </DialogContent>
           <DialogContent>
@@ -103,13 +127,19 @@ export default function FormDialog() {
               options={typesOfEveniment}
               sx={{ width: 300 }}
               renderInput={(params) => <TextField {...params} label="Movie" />}
+              isOptionEqualToValue={isOptionEqualToValue}
+              onChange={(event, value) => setType(value)}
             />
           </DialogContent>
           <DialogContent>
             <DialogContentText>
               Please enter the location of the eveniment.
             </DialogContentText>
-            <InputAtom id="location" label="Location" />
+            <InputAtom
+              id="location"
+              label="Location"
+              onChange={(newValue) => setLocation(newValue)}
+            />
           </DialogContent>
           <DialogActions>
             <ButtonAtom label="Cancel" type={"cancel"} onClick={handleClose} />
@@ -117,8 +147,12 @@ export default function FormDialog() {
               label="Submit"
               type={"submit"}
               onClick={() => {
-                handleClose();
-                handleSubmit();
+                if (handleBlankFields()) {
+                  handleSubmit();
+                  handleClose();
+                } else {
+                  alert("Please fill in all the required fields.");
+                }
               }}
             />
           </DialogActions>
