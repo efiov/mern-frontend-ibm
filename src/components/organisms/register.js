@@ -2,27 +2,26 @@ import ButtonAtom from "../atoms/Button";
 import { FiEdit } from "react-icons/fi";
 import InputAtom from "../atoms/Input";
 import "bootstrap/dist/css/bootstrap.css";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
-export default function RegisterFormForm() {
+export default function RegisterForm() {
+  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      name: event.target.name.value,
-      email: event.target.email.value,
-      password: event.target.password.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "http://localhost:3001/register";
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSONdata,
-    };
-    const response = await fetch(endpoint, options);
-    const result = await response.json();
-    console.log(result);
+    const name = event.target.name.value;
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    try {
+      const response = await axios.post("http://localhost:3001/register", {
+        name: name,
+        email: email,
+        password: password,
+      });
+      router.push("/login");
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <div className="col-sm-7 bg-color align-self-center">
@@ -42,9 +41,13 @@ export default function RegisterFormForm() {
             <InputAtom id="email" name="email" placeholder="Email" />
           </div>
           <div className="form-group form-box">
-            <InputAtom id="password" name="password" type="password" placeholder="Password" />
+            <InputAtom
+              id="password"
+              name="password"
+              type="password"
+              placeholder="Password"
+            />
           </div>
-
           <div className="form-group">
             <ButtonAtom label="Register" type={"submit"} />
           </div>
