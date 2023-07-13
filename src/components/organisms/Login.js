@@ -3,33 +3,26 @@
 import ButtonAtom from "../atoms/Button";
 import InputAtom from "../atoms/Input";
 import "bootstrap/dist/css/bootstrap.css";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function LoginForm() {
-  let navigate = useNavigate();
+  const router = useRouter();
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = {
-      email: event.target.email.value,
-      password: event.target.password.value,
-    };
-    const JSONdata = JSON.stringify(data);
-    const endpoint = "http://localhost:3001/login";
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSONdata,
-    };
-    const response = await fetch(endpoint, options);
-    const result = await response.json();
-    if (result.admin == true) {
-     // navigate("/admin");
-      console.log("admin");
-    } else {
-      // navigate("/user");
-      console.log("user");
+    const email = event.target.email.value;
+    const password = event.target.password.value;
+    try {
+      const response = await axios.post("http://localhost:3001/login", {
+        email: email,
+        password: password,
+      });
+      localStorage.setItem("token", response.data.token);
+      response.data.admin
+        ? router.push("/account/admin")
+        : router.push("/account/user");
+    } catch (error) {
+      console.error(error);
     }
   };
   return (
