@@ -21,14 +21,18 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/components/atoms/Input.js", "src/app/(private_route)/admin/page.js"  ],
+    "**/*.tsx",
+    "src/components/atoms/Input.js",
+    "src/app/(admin_route)/admin/page.js",
+    "src/components/organisms/Navbar.js"
+  ],
   "exclude": [
     "node_modules"
   ]
