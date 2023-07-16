@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 const inter = Inter({ subsets: ["latin"] });
-import AuthProvider from "../components/organisms/AuthProvider";
+import Provider from "../components/organisms/Provider";
 
 export const metadata = {
   title: "Event Planner",
@@ -10,10 +10,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <AuthProvider>
+    <Provider>
       <html lang="en">
         <body className={inter.className}>{children}</body>
       </html>
-    </AuthProvider>
+    </Provider>
   );
 }
