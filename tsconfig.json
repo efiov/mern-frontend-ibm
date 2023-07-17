@@ -32,7 +32,7 @@
     "src/components/atoms/Input.js",
     "src/app/(admin_route)/admin/page.js",
     "src/components/organisms/Navbar.js"
-  ],
+, "src/app/api/auth/[...nextauth]/route.jsx"  ],
   "exclude": [
     "node_modules"
   ]
