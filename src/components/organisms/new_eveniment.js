@@ -15,17 +15,20 @@ import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
+// import SelectPlaces from "react-select-places";
+// import "react-select/dist/react-select.css";
+
 export default function FormDialog() {
   const [open, setOpen] = useState(false);
-
+  // var SelectPlaces = require("react-select-places");
   const handleSubmit = async (event) => {
-    event.preventDefault();
     const data = {
-      name,
+      name: name,
       date: selectedDate,
-      type,
-      location,
+      type: type,
+      location: location,
     };
+    console.log(data);
     const JSONdata = JSON.stringify(data);
     const endpoint = "http://localhost:3001/create";
     const options = {
@@ -49,6 +52,10 @@ export default function FormDialog() {
     setSelectedDate("");
     setType("");
     setLocation("");
+    console.log(name);
+    console.log(selectedDate);
+    console.log(type);
+    console.log(location);
     setOpen(false);
   };
 
@@ -69,10 +76,6 @@ export default function FormDialog() {
   const [name, setName] = useState();
   const [type, setType] = useState();
   const [location, setLocation] = useState();
-  console.log(name);
-  console.log(selectedDate);
-  console.log(type);
-  console.log(location);
 
   //check if all fields are filled in
   const handleBlankFields = () => {
@@ -88,76 +91,89 @@ export default function FormDialog() {
         onClick={handleClickOpen}
         label={"New Eveniment"}
       />
-      <Dialog open={open} onClose={handleClose} fullWidth>
-        <div className="col-sm-7 bg-color align-self-center">
-          <DialogTitle>New Eveniment</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Please enter the name of the eveniment.
-            </DialogContentText>
+      <div className="new-form">
+        <Dialog open={open} onClose={handleClose} fullWidth>
+          <div className="col-sm-7 bg-color align-self-center">
+            <DialogTitle>New Eveniment</DialogTitle>
             <div className="form-group form-box">
-              <InputAtom
-                id="name"
-                label="Eveniment Name"
-                onChange={(newValue) => setName(newValue)}
-              />
-            </div>
-          </DialogContent>
-          <DialogContent>
-            <DialogContentText>
-              Please enter the date of the eveniment.
-            </DialogContentText>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={["DateTimePicker", "DateTimePicker"]}>
-                <DateTimePicker
-                  id="date"
-                  label="Date/Time"
-                  onChange={(newValue) => setSelectedDate(newValue)}
+              <DialogContent>
+                <DialogContentText>
+                  Please enter the name of the eveniment.
+                </DialogContentText>
+                <InputAtom
+                  id="name"
+                  label="Eveniment Name"
+                  onChange={(newValue) => setName(newValue)}
+                  className="name-input"
                 />
-              </DemoContainer>
-            </LocalizationProvider>
-          </DialogContent>
-          <DialogContent>
-            <DialogContentText>
-              Please enter the type of the eveniment.
-            </DialogContentText>
-            <Autocomplete
-              disablePortal
-              id="type"
-              options={typesOfEveniment}
-              sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} label="Movie" />}
-              isOptionEqualToValue={isOptionEqualToValue}
-              onChange={(event, value) => setType(value)}
-            />
-          </DialogContent>
-          <DialogContent>
-            <DialogContentText>
-              Please enter the location of the eveniment.
-            </DialogContentText>
-            <InputAtom
-              id="location"
-              label="Location"
-              onChange={(newValue) => setLocation(newValue)}
-            />
-          </DialogContent>
-          <DialogActions>
-            <ButtonAtom label="Cancel" type={"cancel"} onClick={handleClose} />
-            <ButtonAtom
-              label="Submit"
-              type={"submit"}
-              onClick={() => {
-                if (handleBlankFields()) {
-                  handleSubmit();
-                  handleClose();
-                } else {
-                  alert("Please fill in all the required fields.");
-                }
-              }}
-            />
-          </DialogActions>
-        </div>
-      </Dialog>
+              </DialogContent>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter the date of the eveniment.
+                </DialogContentText>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                    components={["DateTimePicker", "DateTimePicker"]}>
+                    <DateTimePicker
+                      id="date"
+                      label="Select date"
+                      dateFormat="MMMM d, yyyy h:mmaa"
+                      onChange={(newValue) => setSelectedDate(newValue)}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
+              </DialogContent>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter the type of the eveniment.
+                </DialogContentText>
+                <Autocomplete
+                  disablePortal
+                  id="type"
+                  options={typesOfEveniment}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Movie" />
+                  )}
+                  isOptionEqualToValue={isOptionEqualToValue}
+                  onChange={(event, value) => setType(value)}
+                />
+              </DialogContent>
+              <DialogContent>
+                <DialogContentText>
+                  Please enter the location of the eveniment.
+                </DialogContentText>
+                {/* <SelectPlaces onChange={logChange} /> */}
+                <InputAtom
+                  id="location"
+                  label="Location"
+                  onChange={(newValue) => setLocation(newValue)}
+                  className="location-input"
+                />
+              </DialogContent>
+            </div>
+            <DialogActions>
+              <ButtonAtom
+                label="Cancel"
+                type={"cancel"}
+                onClick={handleClose}
+              />
+              <ButtonAtom
+                label="Submit"
+                type={"submit"}
+                onClick={() => {
+                  if (handleBlankFields()) {
+                    handleSubmit();
+                    handleClose();
+                  } else {
+                    alert("Please fill in all the required fields.");
+                  }
+                }}
+              />
+            </DialogActions>
+          </div>
+        </Dialog>
+      </div>
     </div>
   );
 }
