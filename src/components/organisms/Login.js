@@ -3,10 +3,8 @@
 import ButtonAtom from "../atoms/Button";
 import InputAtom from "../atoms/Input";
 import "bootstrap/dist/css/bootstrap.css";
-import { Navigate, useNavigate } from "react-router-dom";
 
 export default function LoginForm() {
-  let navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = {
@@ -25,7 +23,7 @@ export default function LoginForm() {
     const response = await fetch(endpoint, options);
     const result = await response.json();
     if (result.admin == true) {
-     // navigate("/admin");
+      // navigate("/admin");
       console.log("admin");
     } else {
       // navigate("/user");
