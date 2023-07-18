@@ -95,7 +95,7 @@
   .icon {
     position: absolute;
     right: 25px;
-    top: 15px;
+    top: 25px;
   }
   .input-text {
     font-size: 14px;
@@ -135,4 +135,12 @@
     @extend .background;
     color: #342f2f;
   }
+}
+
+.google-icon {
+  font-size: 50px;
+  display: block;
+  margin-top: 25px;
+  margin-left: 100px;
+  cursor: pointer;
 }
