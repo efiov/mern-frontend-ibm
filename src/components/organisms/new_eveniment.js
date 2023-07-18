@@ -14,6 +14,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import EvenimentList from "./eveniment_list";
 
 // import SelectPlaces from "react-select-places";
 // import "react-select/dist/react-select.css";
@@ -25,12 +26,12 @@ export default function FormDialog() {
     const data = {
       name: name,
       date: selectedDate,
-      type: type,
+      description: type,
       location: location,
     };
     console.log(data);
     const JSONdata = JSON.stringify(data);
-    const endpoint = "http://localhost:3001/create";
+    const endpoint = "http://localhost:3001/ce";
     const options = {
       method: "POST",
       headers: {
@@ -91,6 +92,7 @@ export default function FormDialog() {
         onClick={handleClickOpen}
         label={"New Eveniment"}
       />
+      <EvenimentList />
       <div className="new-form">
         <Dialog open={open} onClose={handleClose} fullWidth>
           <div className="col-sm-7 bg-color align-self-center">
