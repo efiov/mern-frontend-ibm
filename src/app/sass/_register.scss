@@ -9,7 +9,7 @@
   .register-box {
     max-width: 960px;
     margin: 0 auto;
-    box-shadow: 0 0 35px rgba(0, 0, 0, 0.1);
+    box-shadow: 8px 8px 50px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
   }
 
@@ -96,9 +96,11 @@
     position: absolute;
     right: 25px;
     top: 15px;
+    font-size: 18px;
   }
   .input-text {
-    font-size: 14px;
+    font-size: 15px;
+    font-weight: 600;
     outline: none;
     color: #616161;
     border-radius: 50px;
@@ -114,7 +116,7 @@
     padding: 10px;
   }
   .primary-btn {
-    background: #5d0da7;
+    background: #206fbe;
     @extend .width-100;
     border: none;
     color: #fff;
@@ -126,9 +128,7 @@
     margin-top: 20px;
     font-family: "Caprasimo";
 
-    &:hover {
-      background: #5151dc;
-    }
+
   }
 
   .default-bg {
@@ -136,3 +136,17 @@
     color: #342f2f;
   }
 }
+
+.auth {
+  display: grid;
+  grid-template-columns: auto auto;
+  width: 80%;
+  margin: auto;
+}
+
+.google-icon {
+  margin-top: 10px;
+  font-size: 45px;
+  cursor: pointer;
+}
+

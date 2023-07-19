@@ -1,12 +1,14 @@
-'use client'
+"use client";
 
 import React from "react";
-import Page from "./login/page";
+import "./page.scss";
+import "bootstrap/dist/css/bootstrap.css";
+import "./assets/bg_img.jpg";
+import Page from "../components/organisms/LoginPage";
 
 export default function Home() {
-  return (
-    <main>
-      <Page />
-    </main>
-  );
+  return <main>
+    <Page />
+    
+  </main>;
 }
