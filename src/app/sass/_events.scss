@@ -1,0 +1,82 @@
+.list {
+  list-style: none;
+  margin: 2rem;
+  padding: 0;
+
+  margin-right: 900px;
+}
+
+.list li {
+  margin: 1rem 0;
+  border: 1px solid #ffffff;
+  background-color: #ffffff#eceffc;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 80px;
+  color: white;
+  background: linear-gradient(
+    90deg,
+    rgb(52, 49, 216) 0%,
+    rgb(73, 100, 211) 21%,
+    rgb(134, 80, 222) 52%,
+    rgba(118, 197, 244, 0.683) 100%
+  );
+  border-radius: 5px;
+  box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
+    0 1px 1px rgba(31, 27, 27, 0.155), 0 2.1px 2.1px rgba(128, 128, 128, 0.195),
+    0 4.4px 4.4px rgba(59, 52, 52, 0.241), 0 12px 12px rgba(22, 19, 19, 0.35);
+}
+
+.name {
+  font-size: 20px;
+  font-weight: 800;
+
+  background-image: linear-gradient(to left, #ffffff, #ffffff);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.content {
+  font-weight: 650;
+}
+
+.title {
+  margin-bottom: 30px;
+  margin-top: 40px;
+  margin-left: 100px;
+  font-size: 70px;
+  font-weight: 600;
+  background-image: linear-gradient(to left, #a8aaf6, #2160ff);
+  color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+
+  text-shadow: 0 0.4px 0.4px rgba(68, 68, 102, 0.109),
+    0 1px 1px rgba(37, 33, 79, 0.155), 0 2.1px 2.1px rgba(128, 128, 128, 0.195),
+    0 4.4px 4.4px rgba(88, 77, 118, 0.241), 0 12px 12px rgba(93, 85, 85, 0.35);
+}
+
+.imgContainer {
+  flex: 1;
+  height: 600px;
+  width: 700px;
+  position: relative;
+  left: 600px;
+  bottom: 700px;
+}
+
+.btn-primary {
+  background: #55d8f2;
+  @extend .width-100;
+  border: none;
+  color: #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  padding: 10px 30px 9px 30px;
+  cursor: pointer;
+  height: 45px;
+  border-radius: 50px;
+  margin-top: 20px;
+  font-family: "Caprasimo";
+}
