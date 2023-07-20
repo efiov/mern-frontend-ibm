@@ -48,15 +48,20 @@ export default function EvenimentList() {
   };
 
   const handleDelete = async (eventId) => {
-    try {
-      await fetch(`http://localhost:3001/ge/${eventId}`, {
-        method: "DELETE",
-      });
-      setEventList((prevEventList) =>
-        prevEventList.filter((event) => event._id !== eventId)
-      );
-    } catch (error) {
-      console.error("Error deleting event:", error);
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
+    if (confirmDelete) {
+      try {
+        await fetch(`http://localhost:3001/ge/${eventId}`, {
+          method: "DELETE",
+        });
+        setEventList((prevEventList) =>
+          prevEventList.filter((event) => event._id !== eventId)
+        );
+      } catch (error) {
+        console.error("Error deleting event:", error);
+      }
     }
   };
 
