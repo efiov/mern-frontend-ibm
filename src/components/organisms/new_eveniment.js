@@ -53,10 +53,10 @@ export default function FormDialog() {
     setSelectedDate("");
     setType("");
     setLocation("");
-    console.log(name);
-    console.log(selectedDate);
-    console.log(type);
-    console.log(location);
+    // console.log(name);
+    // console.log(selectedDate);
+    // console.log(type);
+    // console.log(location);
     setOpen(false);
   };
 
