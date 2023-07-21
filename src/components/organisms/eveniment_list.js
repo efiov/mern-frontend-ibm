@@ -10,6 +10,8 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContentText from "@mui/material/DialogContentText";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 
 export default function EvenimentList() {
   const [eventList, setEventList] = useState([]);
@@ -33,7 +35,7 @@ export default function EvenimentList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3001/ge");
+        const response = await fetch("http://localhost:3001/getEvents");
         const data = await response.json();
         setEventList(data);
       } catch (error) {
@@ -53,7 +55,7 @@ export default function EvenimentList() {
     );
     if (confirmDelete) {
       try {
-        await fetch(`http://localhost:3001/ge/${eventId}`, {
+        await fetch(`http://localhost:3001/deleteEvent/${eventId}`, {
           method: "DELETE",
         });
         setEventList((prevEventList) =>
@@ -105,7 +107,7 @@ export default function EvenimentList() {
 
   const handleConfirmChanges = async () => {
     try {
-      await fetch(`http://localhost:3001/ge/${editingEventId}`, {
+      await fetch(`http://localhost:3001/editEvent/${editingEventId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -226,6 +228,16 @@ export default function EvenimentList() {
                     onChange={(e) =>
                       setEditedEvent({ ...editedEvent, location: e })
                     }
+                  />
+                </DialogContent>
+                <DialogContent>
+                  <DialogContentText>
+                    Select all grups to invite
+                  </DialogContentText>
+                  <Chip
+                    label="Grup 1"
+                    // onClick={handleClick}
+                    // onDelete={handleDelete}
                   />
                 </DialogContent>
               </div>

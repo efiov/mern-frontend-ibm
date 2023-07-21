@@ -8,19 +8,23 @@ import InputAtom from "../atoms/Input";
 import ButtonAtom from "../atoms/Button";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import EvenimentList from "./eveniment_list";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 
 // import SelectPlaces from "react-select-places";
 // import "react-select/dist/react-select.css";
 
 export default function FormDialog() {
   const [open, setOpen] = useState(false);
+  const [groups, setGroups] = useState([]);
+  const [selectedGroups, setSelectedGroups] = useState([]);
   // var SelectPlaces = require("react-select-places");
   const handleSubmit = async (event) => {
     const data = {
@@ -31,7 +35,7 @@ export default function FormDialog() {
     };
     console.log(data);
     const JSONdata = JSON.stringify(data);
-    const endpoint = "http://localhost:3001/ce";
+    const endpoint = "http://localhost:3001/createEvent";
     const options = {
       method: "POST",
       headers: {
@@ -39,9 +43,25 @@ export default function FormDialog() {
       },
       body: JSONdata,
     };
-    const response = await fetch(endpoint, options);
-    const result = await response.json();
-    console.log(result);
+    try {
+      const response = await fetch(endpoint, options);
+      const result = await response.json();
+      console.log(result);
+
+      // You'll need to implement this functionality on the backend using a library like Nodemailer.
+      // Example: sendEmailToUsersInGroups(selectedGroups, eventData);
+    } catch (error) {
+      console.error("Failed to create event:", error);
+    }
+  };
+  const handleChipClick = (group) => {
+    setSelectedGroups((prevSelectedGroups) => {
+      if (prevSelectedGroups.includes(group._id)) {
+        return prevSelectedGroups.filter((id) => id !== group._id);
+      } else {
+        return [...prevSelectedGroups, group._id];
+      }
+    });
   };
 
   //dialog buttons handlers
@@ -53,10 +73,6 @@ export default function FormDialog() {
     setSelectedDate("");
     setType("");
     setLocation("");
-    // console.log(name);
-    // console.log(selectedDate);
-    // console.log(type);
-    // console.log(location);
     setOpen(false);
   };
 
@@ -69,6 +85,21 @@ export default function FormDialog() {
     "Party",
     "Other",
   ];
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/getGroups");
+        const data = await response.json();
+        setGroups(data); // Set the fetched groups in the state variable
+      } catch (error) {
+        console.error("Failed to fetch groups:", error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
   const isOptionEqualToValue = (option, value) => {
     return option.label === value.label;
   };
@@ -152,6 +183,25 @@ export default function FormDialog() {
                   onChange={(newValue) => setLocation(newValue)}
                   className="location-input"
                 />
+              </DialogContent>
+              <DialogContent>
+                <DialogContentText>
+                  Select all grups to invite
+                </DialogContentText>
+                <Stack direction="row" spacing={1}>
+                  {groups.map((group) => (
+                    <Chip
+                      key={group._id}
+                      label={group.name}
+                      onClick={() => handleChipClick(group)}
+                      color={
+                        selectedGroups.includes(group._id)
+                          ? "primary"
+                          : "default"
+                      }
+                    />
+                  ))}
+                </Stack>
               </DialogContent>
             </div>
             <DialogActions>
