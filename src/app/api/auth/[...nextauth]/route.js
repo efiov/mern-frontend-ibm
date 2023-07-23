@@ -51,33 +51,30 @@ export const authOptions = {
         if (!passwordMatch) {
           throw new Error("Incorrect password");
         }
-
         return user;
       },
     }),
   ],
 
   callbacks: {
-    async jwt({ token, user, session, trigger }) {
-      if (trigger === "update" && session?.name) {
-        token.name = session.name;
-      }
+    async jwt({ token, user }) {
       if (user) {
-        return {
-          ...token,
-          id: user.id,
-        };
+        token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.image = user.image;
+        token.role = user.role;
       }
       return token;
     },
-    async session({ session, token, user }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          id: token.id,
-        },
-      };
+    async session({ session, token }) {
+      if (token) {
+        session.user.id = token.id;
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.role = token.role;
+        session.user.image = token.image;
+      }
       return session;
     },
   },
