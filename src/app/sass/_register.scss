@@ -1,3 +1,6 @@
+.fullBack {
+  background-color: rgba(234, 222, 228, 0.2);
+}
 .form {
   min-height: 100vh;
   display: flex;
@@ -17,7 +20,7 @@
     padding: 0;
     border-radius: 10px 0 0 10px;
     background: rgba(0, 0, 0, 0.04)
-      url(http://localhost:3000/_next/static/media/bg_img.a5be0b1f.jpg) top left
+      url(http://localhost:3000/_next/static/media/bg_img.bf0218d7.jpg) top left
       repeat;
     background-size: cover;
     top: 0;
@@ -95,8 +98,8 @@
   .icon {
     position: absolute;
     right: 25px;
-    top: 15px;
-    font-size: 18px;
+    top: 22px;
+    font-size: 20px;
   }
   .input-text {
     font-size: 15px;
@@ -127,8 +130,6 @@
     border-radius: 50px;
     margin-top: 20px;
     font-family: "Caprasimo";
-
-
   }
 
   .default-bg {
@@ -142,11 +143,13 @@
   grid-template-columns: auto auto;
   width: 80%;
   margin: auto;
+  justify-items: center;
+  padding: 5px;
+  margin-top: 10px;
 }
 
 .google-icon {
-  margin-top: 10px;
-  font-size: 45px;
+  margin: 5px;
+  font-size: 40px;
   cursor: pointer;
 }
-

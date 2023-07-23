@@ -9,7 +9,8 @@ import "../assets/bg_img.jpg";
 
 export default function Page() {
   return (
-    <div className="form">
+    <div className="fullBack">
+      <div className="form">
       <div className="container">
         <div className="row register-box">
           <BaseRegister />
@@ -17,5 +18,7 @@ export default function Page() {
         </div>
       </div>
     </div>
+    </div>
+    
   );
 }

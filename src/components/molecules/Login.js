@@ -24,7 +24,12 @@ export default function LoginForm() {
   const togglePassword = () => setPasswordShown(!passwordShown);
   useEffect(() => {
     if (session?.status === "authenticated") {
-      router.push("/dashboard");
+      if (session?.data.user.role == "ADMIN") {
+        router.push("/dashadmin");
+      }
+      if (session?.data.user.role === "USER") {
+        router.push("/dashuser");
+      }
     }
   });
 
@@ -34,10 +39,15 @@ export default function LoginForm() {
       if (callback?.error) {
         toast.error(callback.error);
       }
-
       if (callback?.ok && !callback?.error) {
         toast.success("Logged in successfully!");
-        router.push("/dashboard");
+        if (session.data.user.role == "ADMIN") {
+          router.push("/dashadmin");
+        } else if (session.data.user.role === "USER") {
+          router.push("/dashuser");
+        } else {
+          router.push("/");
+        }
       }
     });
   };
@@ -94,7 +104,7 @@ export default function LoginForm() {
           className="google-icon"
           onClick={() =>
             signIn("google", {
-              callbackUrl: `${window.location.origin}/dashboard`,
+              callbackUrl: `${window.location.origin}/dashuser`,
             })
           }
         >
@@ -104,7 +114,7 @@ export default function LoginForm() {
           className="google-icon"
           onClick={() =>
             signIn("github", {
-              callbackUrl: `${window.location.origin}/dashboard`,
+              callbackUrl: `${window.location.origin}/dashuser`,
             })
           }
         >
