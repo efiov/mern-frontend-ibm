@@ -4,7 +4,7 @@ import ButtonAtom from "../atoms/Button";
 import InputAtom from "../atoms/Input";
 import "bootstrap/dist/css/bootstrap.css";
 import { useRouter } from "next/navigation";
-import { useSession, signIn, getSession } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { FiAtSign } from "react-icons/fi";
 import { AiOutlineEyeInvisible } from "react-icons/ai";
@@ -24,12 +24,7 @@ export default function LoginForm() {
   const togglePassword = () => setPasswordShown(!passwordShown);
   useEffect(() => {
     if (session?.status === "authenticated") {
-      if (session?.data.user.role == "ADMIN") {
-        router.push("/dashadmin");
-      }
-      if (session?.data.user.role === "USER") {
-        router.push("/dashuser");
-      }
+      router.push("/");
     }
   });
 
@@ -41,13 +36,7 @@ export default function LoginForm() {
       }
       if (callback?.ok && !callback?.error) {
         toast.success("Logged in successfully!");
-        if (session.data.user.role == "ADMIN") {
-          router.push("/dashadmin");
-        } else if (session.data.user.role === "USER") {
-          router.push("/dashuser");
-        } else {
-          router.push("/");
-        }
+        router.push("/");
       }
     });
   };
@@ -104,7 +93,7 @@ export default function LoginForm() {
           className="google-icon"
           onClick={() =>
             signIn("google", {
-              callbackUrl: `${window.location.origin}/dashuser`,
+              callbackUrl: `${window.location.origin}/`,
             })
           }
         >
@@ -114,7 +103,7 @@ export default function LoginForm() {
           className="google-icon"
           onClick={() =>
             signIn("github", {
-              callbackUrl: `${window.location.origin}/dashuser`,
+              callbackUrl: `${window.location.origin}/`,
             })
           }
         >

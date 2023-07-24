@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import BaseRegister from "../molecules/BaseRegister";
-import LoginForm from "../molecules/Login";
-import "../../app/page.scss";
+import BaseRegister from "../../components/molecules/BaseRegister";
+import LoginForm from "../../components/molecules/Login";
+import "../page.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import "../../app/assets/bg_img.jpg";
 
