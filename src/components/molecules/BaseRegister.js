@@ -10,7 +10,7 @@ export default function BaseRegister() {
         <div className="logo clearfix"></div>
         <div className="btn-section clearfix">
           <Link
-            href="/"
+            href="/login"
             className="nav-link link-btn btn-primary default-bg"
           >
             Login

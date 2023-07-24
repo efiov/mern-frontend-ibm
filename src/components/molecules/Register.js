@@ -36,7 +36,7 @@ export default function RegisterForm() {
         .post("/api/register", data)
         .then(() => {
           toast.success("User has been registered!");
-          router.push("/");
+          router.push("/login");
         })
         .catch(() => toast.error("Something went wrong!"));
     }

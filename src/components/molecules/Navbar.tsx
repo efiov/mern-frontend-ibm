@@ -7,7 +7,7 @@ import "../../app/page.scss";
 
 export default function Navbar({ user }: { user: any }) {
   return (
-    <Disclosure as="nav" className="bs bk shadow-sm mb-8">
+    <Disclosure as="nav" className="bs bk mb-8">
       {() => (
         <>
           <div className="mx-auto font-bold">

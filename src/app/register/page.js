@@ -11,14 +11,13 @@ export default function Page() {
   return (
     <div className="fullBack">
       <div className="form">
-      <div className="container">
-        <div className="row register-box">
-          <BaseRegister />
-          <RegisterForm />
+        <div className="container">
+          <div className="row register-box">
+            <BaseRegister />
+            <RegisterForm />
+          </div>
         </div>
       </div>
     </div>
-    </div>
-    
   );
 }
