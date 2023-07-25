@@ -123,10 +123,10 @@ export default function BasicTable({ rows }) {
       </TableContainer>
       {Object.entries(openEvents).map(([eventId, isOpen]) => (
         <Dialog
+          fullWidth
           key={eventId}
           open={isOpen}
-          onClose={() => handleCloseEditDialog(eventId)}
-        >
+          onClose={() => handleCloseEditDialog(eventId)}>
           <div className="col-sm-7 bg-color align-self-center">
             <DialogTitle>Edit Eveniment</DialogTitle>
             <div className="form-group form-box">
