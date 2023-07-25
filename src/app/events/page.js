@@ -25,8 +25,8 @@ export default function Home() {
         <h1>Events</h1>
         <Link href="/" className="link-admin">
           Return to Home Page...
-          <NewEveniment />
         </Link>
+        <NewEveniment />
       </div>
     </main>
   );

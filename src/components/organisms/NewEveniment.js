@@ -21,7 +21,7 @@ import Stack from "@mui/material/Stack";
 // import SelectPlaces from "react-select-places";
 // import "react-select/dist/react-select.css";
 
-export default function FormDialog() {
+export default function NewEveniment() {
   const [open, setOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
@@ -114,7 +114,6 @@ export default function FormDialog() {
 
   return (
     <div>
-      
       <EvenimentList />
       <ButtonAtom
         variant="outlined"
@@ -143,8 +142,7 @@ export default function FormDialog() {
                 </DialogContentText>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DemoContainer
-                    components={["DateTimePicker", "DateTimePicker"]}
-                  >
+                    components={["DateTimePicker", "DateTimePicker"]}>
                     <DateTimePicker
                       id="date"
                       label="Select date"

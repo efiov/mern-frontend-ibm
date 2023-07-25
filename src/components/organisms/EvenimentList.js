@@ -54,7 +54,6 @@ export default function EvenimentList() {
           label="Sort by Newest"
         />
       </div>
-
       <TableList rows={sortedEvents} />
     </div>
   );
