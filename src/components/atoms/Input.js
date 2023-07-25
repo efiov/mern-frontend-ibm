@@ -1,17 +1,17 @@
 "use client";
 
-const InputAtom = ({ id, name, type, label, placeholder, onChange, value }) => {
+const InputAtom = ({ id, name, type, label, placeholder, value, onChange }) => {
   return (
     <input
       label={label}
-      value={value}
       id={id}
       name={name}
       type={type}
       className="input-text"
+      value={value}
       placeholder={placeholder}
-      onChange={(e) => onChange(e.target.value)}
       required
+      onChange={onChange}
     />
   );
 };

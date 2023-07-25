@@ -1,11 +1,11 @@
-'use client'
-import 'bootstrap/dist/css/bootstrap.css'
-const ButtonAtom = ({ label, type, onClick }) => {
+"use client";
+import "bootstrap/dist/css/bootstrap.css";
+const ButtonAtom = ({ label, type }) => {
   return (
-    <button className="btn primary-btn" type={type} onClick={onClick}>
+    <button className="btn primary-btn" type={type}>
       {label}
     </button>
-  )
-}
+  );
+};
 
-export default ButtonAtom
+export default ButtonAtom;
