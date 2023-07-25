@@ -52,7 +52,7 @@ export default function BasicTable({ rows }) {
         body: JSON.stringify({
           name: editedEvent.name,
           date: editedEvent.date,
-          description: editedEvent.description,
+          type: editedEvent.description,
           location: editedEvent.location,
         }),
       });
@@ -65,7 +65,7 @@ export default function BasicTable({ rows }) {
             ...row,
             name: editedEvent.name,
             date: editedEvent.date,
-            description: editedEvent.description,
+            type: editedEvent.description,
             location: editedEvent.location,
           };
         }
@@ -91,7 +91,7 @@ export default function BasicTable({ rows }) {
     setEditedEvent({
       name: eventToEdit.name,
       date: eventToEdit.date,
-      description: eventToEdit.description,
+      type: eventToEdit.description,
       location: eventToEdit.location,
     });
     setOpenEvents((prevOpenEvents) => ({
@@ -215,7 +215,7 @@ export default function BasicTable({ rows }) {
                   onChange={(e) =>
                     setEditedEvent({
                       ...editedEvent,
-                      type: e.target.value,
+                      description: e.target.value,
                     })
                   }
                 />
