@@ -35,7 +35,7 @@ export default function Navbar({ user }: { user: any }) {
                         <span className="sr-only">Open user menu</span>
                         <Image
                           className="h-8 w-8 rounded-full"
-                          src={user?.image || ""}
+                          src={user?.image || "https://i.pravatar.cc/"}
                           height={32}
                           width={32}
                           alt={`${user?.name || "placeholder"} avatar`}
@@ -93,7 +93,7 @@ export default function Navbar({ user }: { user: any }) {
                   <div className="flex-shrink-0">
                     <Image
                       className="h-8 w-8 rounded-full"
-                      src={user.image}
+                      src={user?.image || "https://i.pravatar.cc/"}
                       height={32}
                       width={32}
                       alt={`${user.name} avatar`}
