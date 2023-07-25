@@ -14,7 +14,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import EvenimentList from "./eveniment_list";
+import EvenimentList from "./EvenimentList";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 
@@ -47,7 +47,6 @@ export default function FormDialog() {
       const response = await fetch(endpoint, options);
       const result = await response.json();
       console.log(result);
-
       // You'll need to implement this functionality on the backend using a library like Nodemailer.
       // Example: sendEmailToUsersInGroups(selectedGroups, eventData);
     } catch (error) {
