@@ -1,0 +1,62 @@
+.new-form {
+    .form-group {
+      margin-bottom: 20px;
+    }
+  
+    .name-input {
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+  
+    .location-input {
+      border: 10px solid #ccc;
+      padding: 10px;
+    }
+  
+    .form-box {
+      position: relative;
+      width: 100%;
+    }
+  
+    .form-box .icon {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+  
+    .input-text {
+      font-size: 14px;
+      outline: none;
+      color: #616161;
+      border-radius: 50px;
+      border: 1px solid transparent;
+      background: #fff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      padding: 11px 45px 11px 20px;
+      width: 100%;
+      margin-bottom: 10px;
+  
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  
+    .submit-btn {
+      background: #5d0da7;
+      width: 100%;
+      border: none;
+      color: #fff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      padding: 10px 30px 9px 30px;
+      cursor: pointer;
+      height: 45px;
+      border-radius: 50px;
+      margin-top: 20px;
+      font-family: "Caprasimo";
+  
+      &:hover {
+        background: #5151dc;
+      }
+    }
+  }

@@ -8,7 +8,7 @@ import Image from "next/image";
 
 // import FullCalendar from "@fullcalendar/react";
 // import dayGridPlugin from "@fullcalendar/daygrid";
-export default function EventsList({email}) {
+export default function EventsList({ email }) {
   const [eventList, setEventList] = useState([]);
   const [modalData, setModalData] = useState([]);
   let [isOpen, setIsOpen] = useState(false);
@@ -44,8 +44,20 @@ export default function EventsList({email}) {
     setIsOpen(true);
   }
 
-  const months= ["January","February","March","April","May","June","July",
-            "August","September","October","November","December"];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
 
   const toDate = (jsonDate) => {
     const dateObject = new Date(jsonDate);
