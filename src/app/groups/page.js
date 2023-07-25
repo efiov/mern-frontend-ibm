@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import Navbar from "../../components/molecules/Navbar";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import GroupsPage from "../../components/organisms/Groups";
 
 export default function Home() {
   const { data: session, status } = useSession({
@@ -25,6 +26,7 @@ export default function Home() {
         <Link href="/" className="link-admin">
           Return to Home Page...
         </Link>
+        <GroupsPage />
       </div>
     </main>
   );
