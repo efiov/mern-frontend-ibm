@@ -6,16 +6,12 @@ import { Dialog, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import Image from "next/image";
 
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-export default function EventsList() {
+// import FullCalendar from "@fullcalendar/react";
+// import dayGridPlugin from "@fullcalendar/daygrid";
+export default function EventsList({email}) {
   const [eventList, setEventList] = useState([]);
   const [modalData, setModalData] = useState([]);
   let [isOpen, setIsOpen] = useState(false);
-
-  // remeove this
-  const id = "64be0985dbf6e598d45150d9";
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,7 +20,7 @@ export default function EventsList() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id }),
+          body: JSON.stringify({ email }),
         });
 
         if (!response.ok) {
@@ -32,7 +28,6 @@ export default function EventsList() {
         }
 
         const data = await response.json();
-        console.log(data.events);
         setEventList(data.events);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -81,7 +76,7 @@ export default function EventsList() {
                   }}
                   className="btn-primary"
                 >
-                  View Details
+                  Details
                 </button>
               </div>
               <Transition appear show={isOpen} as={Fragment}>
