@@ -8,6 +8,7 @@ import Navbar from "../../components/molecules/Navbar";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import NewEveniment from "../../components/organisms/NewEveniment";
+import EvenimentList from "../../components/organisms/EvenimentList";
 
 export default function Home() {
   const { data: session, status } = useSession({
@@ -23,10 +24,13 @@ export default function Home() {
       <Navbar user={session?.user} />
       <div className="dashboard">
         <h1>Events</h1>
-        <Link href="/" className="link-admin">
-          Return to Home Page...
-        </Link>
-        <NewEveniment />
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <Link href="/" className="link-admin">
+            Return to Home Page...
+          </Link>
+          <NewEveniment />
+        </div>
+        <EvenimentList />
       </div>
     </main>
   );

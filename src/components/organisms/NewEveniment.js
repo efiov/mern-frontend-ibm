@@ -17,6 +17,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import EvenimentList from "./EvenimentList";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
 
 // import SelectPlaces from "react-select-places";
 // import "react-select/dist/react-select.css";
@@ -26,7 +27,7 @@ export default function NewEveniment() {
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
   // var SelectPlaces = require("react-select-places");
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     const data = {
       name: name,
       date: selectedDate,
@@ -50,6 +51,7 @@ export default function NewEveniment() {
       console.error("Failed to create event:", error);
     }
   };
+
   const handleChipClick = (group) => {
     setSelectedGroups((prevSelectedGroups) => {
       if (prevSelectedGroups.includes(group._id)) {
@@ -114,12 +116,9 @@ export default function NewEveniment() {
 
   return (
     <div>
-      <EvenimentList />
-      <ButtonAtom
-        variant="outlined"
-        onClick={handleClickOpen}
-        label={"New Eveniment"}
-      />
+      <Button variant="contained" onClick={handleClickOpen}>
+        New Event
+      </Button>
       <div className="new-form">
         <Dialog open={open} onClose={handleClose} fullWidth>
           <div className="col-sm-7 bg-color align-self-center">

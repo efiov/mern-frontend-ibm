@@ -27,12 +27,63 @@ import EditIcon from "@mui/icons-material/Edit";
 export default function BasicTable({ rows }) {
   const [openEvents, setOpenEvents] = useState({});
   const [editingEventId, setEditingEventId] = useState(null);
+  const [row, setRows] = useState();
   const [editedEvent, setEditedEvent] = useState({
     name: "",
     date: new Date(),
     type: "",
     location: "",
   });
+
+  const handleCloseEditDialog = (eventId) => {
+    setOpenEvents((prevOpenEvents) => ({
+      ...prevOpenEvents,
+      [eventId]: false,
+    }));
+  };
+
+  const handleConfirmChanges = async () => {
+    try {
+      await fetch(`http://localhost:3001/editEvent/${editingEventId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: editedEvent.name,
+          date: editedEvent.date,
+          description: editedEvent.description,
+          location: editedEvent.location,
+        }),
+      });
+
+      // Assuming the response from the server returns the updated event object,
+      // we can find the corresponding event in the rows array and update it with the editedEvent data.
+      const updatedRows = rows.map((row) => {
+        if (row._id === editingEventId) {
+          return {
+            ...row,
+            name: editedEvent.name,
+            date: editedEvent.date,
+            description: editedEvent.description,
+            location: editedEvent.location,
+          };
+        }
+        return row;
+      });
+
+      // Update the state with the updated rows
+      setRows(updatedRows);
+
+      // Close the edit dialog
+      setOpenEvents((prevOpenEvents) => ({
+        ...prevOpenEvents,
+        [editingEventId]: false,
+      }));
+    } catch (error) {
+      console.error("Error editing event:", error);
+    }
+  };
 
   const handleEdit = (eventId) => {
     setEditingEventId(eventId);
@@ -46,13 +97,6 @@ export default function BasicTable({ rows }) {
     setOpenEvents((prevOpenEvents) => ({
       ...prevOpenEvents,
       [eventId]: true,
-    }));
-  };
-
-  const handleCloseEditDialog = (eventId) => {
-    setOpenEvents((prevOpenEvents) => ({
-      ...prevOpenEvents,
-      [eventId]: false,
     }));
   };
 
@@ -76,7 +120,7 @@ export default function BasicTable({ rows }) {
 
   return (
     <div>
-      <TableContainer component={Paper}>
+      <TableContainer component={Paper} setRows={setRows}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -137,7 +181,9 @@ export default function BasicTable({ rows }) {
                 <InputAtom
                   type="text"
                   value={editedEvent.name}
-                  onChange={(e) => setEditedEvent({ ...editedEvent, name: e })}
+                  onChange={(e) =>
+                    setEditedEvent({ ...editedEvent, name: e.target.value })
+                  }
                 />
               </DialogContent>
 
@@ -161,7 +207,7 @@ export default function BasicTable({ rows }) {
 
               <DialogContent>
                 <DialogContentText>
-                  Edit the description of the eveniment.
+                  Edit the type of the eveniment.
                 </DialogContentText>
                 <InputAtom
                   type="text"
@@ -169,7 +215,7 @@ export default function BasicTable({ rows }) {
                   onChange={(e) =>
                     setEditedEvent({
                       ...editedEvent,
-                      type: e,
+                      type: e.target.value,
                     })
                   }
                 />
@@ -183,7 +229,7 @@ export default function BasicTable({ rows }) {
                   type="text"
                   value={editedEvent.location}
                   onChange={(e) =>
-                    setEditedEvent({ ...editedEvent, location: e })
+                    setEditedEvent({ ...editedEvent, location: e.target.value })
                   }
                 />
               </DialogContent>
