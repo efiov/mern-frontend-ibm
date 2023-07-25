@@ -25,15 +25,23 @@ export default function GroupsPage () {
   const [selectedPeople, setSelectedPeople] = useState([]);
   const [newGroupName, setNewGroupName] = useState('');
   const [isGroupsUpdated, setIsGroupsUpdated] = useState(false);
-  const [openModal, setOpenModal] = useState(false);
+  const [openCreateGroupModal, setOpenCreateGroupModal] = useState(false);
+const [openSelectPeopleModal, setOpenSelectPeopleModal] = useState(false);
 
-  const handleOpenModal = () => {
-    setOpenModal(true);
+  const handleOpenCreateGroupModal = () => {
+    setOpenCreateGroupModal(true);
   };
-
-  // Function to close the modal
-  const handleCloseModal = () => {
-    setOpenModal(false);
+  
+  const handleCloseCreateGroupModal = () => {
+    setOpenCreateGroupModal(false);
+  };
+  
+  const handleOpenSelectPeopleModal = () => {
+    setOpenSelectPeopleModal(true);
+  };
+  
+  const handleCloseSelectPeopleModal = () => {
+    setOpenSelectPeopleModal(false);
   };
 
   
@@ -205,82 +213,92 @@ export default function GroupsPage () {
   };
   return (
     <div>
+        <Button variant="contained" color="primary" type="button" onClick={handleOpenCreateGroupModal} style={{ textTransform: 'none',marginRight:'20px',marginTop:'20px' }}>
+  Create Group
+</Button>
+
+<Button variant="contained" color="primary" type="button" onClick={handleOpenSelectPeopleModal} style={{ textTransform: 'none',marginTop:'20px' }}>
+  Add to Group
+</Button>
     <div style={{ marginTop:'10px',marginBottom:'20px' }}>
    
-    <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
-        <DialogTitle>Select Group and People</DialogTitle>
-        <DialogContent>
-          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
-            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: '0 auto' }}>
-              <TextField
-                type="text"
-                value={newGroupName}
-                onChange={handleNewGroupNameChange}
-                label="Enter a new group name"
-                fullWidth
-                margin="normal"
-                variant="outlined"
+    <Dialog open={openCreateGroupModal} onClose={handleCloseCreateGroupModal} fullWidth maxWidth="sm">
+  <DialogTitle>Create Group</DialogTitle>
+  <DialogContent>
+    <div style={{ display: 'flex', justifyContent: 'space-between', padding: '10px' }}>
+      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', margin: '0 auto' }}>
+        <TextField
+          type="text"
+          value={newGroupName}
+          onChange={handleNewGroupNameChange}
+          label="Enter a new group name"
+          fullWidth
+          margin="normal"
+          variant="outlined"
+        />
+        <Button
+          style={{ marginLeft: '40px', textTransform: 'none', height: '55px', marginTop: '5px' }}
+          variant="contained"
+          color="primary"
+          onClick={handleCreateGroup}
+        >
+          Create Group
+        </Button>
+      </div>
+    </div>
+  </DialogContent>
+</Dialog>
+
+<Dialog open={openSelectPeopleModal} onClose={handleCloseSelectPeopleModal} fullWidth maxWidth="sm">
+  <DialogTitle>Select Group and People</DialogTitle>
+  <DialogContent>
+    <div>
+      <label htmlFor="groupSelect">Select a group:</label>
+      <Select
+        style={{ marginLeft: '15px' }}
+        id="groupSelect"
+        value={selectedGroup}
+        onChange={handleGroupChange}
+      >
+        <MenuItem value="">-- Select a group --</MenuItem>
+        {Object.keys(groups).map((group, index) => (
+          <MenuItem key={index} value={group}>
+            {group}
+          </MenuItem>
+        ))}
+      </Select>
+    </div>
+
+    <div>
+      <p>Select people:</p>
+      {people.map((person) => (
+        <div key={person._id}>
+          <FormControlLabel
+            control={
+              <Checkbox
+                value={person._id}
+                checked={selectedPeople.includes(person)}
+                onChange={handlePersonChange}
               />
-
-              <Button
-                style={{ marginLeft: '40px',textTransform: 'none', height: '55px', marginTop: '5px' }}
-                variant="contained"
-                color="primary"
-                onClick={handleCreateGroup}
-              >
-                Create Group
-              </Button>
+            }
+            label={person.name}
+          />
         </div>
-        </div>
-        <div>
-        <label htmlFor="groupSelect">Select a group:</label>
-              <Select
-                style={{ marginLeft: '15px' }}
-                id="groupSelect"
-                value={selectedGroup}
-                onChange={handleGroupChange}
-              >
-                <MenuItem value="">-- Select a group --</MenuItem>
-                {Object.keys(groups).map((group, index) => (
-                  <MenuItem key={index} value={group}>
-                    {group}
-                  </MenuItem>
-                ))}
-              </Select>
-            </div>
-          
-
-          <div>
-            <p>Select people:</p>
-            {people.map((person) => (
-              <div key={person._id}>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      value={person._id}
-                      checked={selectedPeople.includes(person)}
-                      onChange={handlePersonChange}
-                    />
-                  }
-                  label={person.name}
-                />
-              </div>
-            ))}
-          </div>
-          <div style={{ width: '300px', margin: '0 auto' }}>
-            <Button
-              variant="contained"
-              color="primary"
-              type="button"
-              onClick={handleAddToGroup}
-              style={{ textTransform: 'none' }}
-      
-            >
-              Add to Group
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
+      ))}
+    </div>
+    <div style={{ width: '300px', margin: '0 auto' }}>
+      <Button
+        variant="contained"
+        color="primary"
+        type="button"
+        onClick={handleAddToGroup}
+        style={{ textTransform: 'none' }}
+      >
+        Add to Group
+      </Button>
+    </div>
+  </DialogContent>
+</Dialog>
 
 
     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between' }}>
@@ -296,6 +314,10 @@ export default function GroupsPage () {
                 boxShadow: '0px 1px 6px 2px lightgray',
                 padding: '10px',
                 margin: '10px',
+                maxHeight: '235px', 
+                overflowY: 'auto',
+                scrollbarWidth: 'thin', 
+                scrollbarColor: '#1976d2 #f5f5f5',
               }}
             >
               <strong>{group}</strong>
@@ -346,17 +368,8 @@ export default function GroupsPage () {
     ))
     )}
 </div>
-<Button
-        style={{ marginBottom: '20px',textTransform: 'none'  }}
-        variant="contained"
-        color="primary"
-        type="button"
-        onClick={handleOpenModal}
-        startIcon={<AddIcon />}
-       
-      >
-        New Group
-      </Button>
+
+    
     </div>
       </div>
   );

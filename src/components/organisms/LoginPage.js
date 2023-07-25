@@ -5,6 +5,7 @@ import LoginForm from "../molecules/Login";
 import "../../app/page.scss";
 import "bootstrap/dist/css/bootstrap.css";
 import "../../app/assets/bg_img.jpg";
+import GroupsPage from "../../components/organisms/Groups";
 
 export default function Page() {
   return (
@@ -12,8 +13,9 @@ export default function Page() {
       <div className="form">
         <div className="container">
           <div className="row register-box">
-            <BaseRegister />
-            <LoginForm />
+            <GroupsPage />
+            {/* <BaseRegister />
+            <LoginForm /> */}
           </div>
         </div>
       </div>
