@@ -1,3 +1,25 @@
+.events-flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:space-between;
+}
+
+.events-box {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.cal-box {
+  height: 600px;
+  width: 700px;
+  position: absolute;
+  top: 50px;
+  left: 600px;
+}
+
+
 .list {
   list-style: none;
   margin: 2rem;
@@ -30,7 +52,8 @@
 }
 
 .name {
-  font-size: 20px;
+  font-size: 26px;
+  font-variant: small-caps;
   font-weight: 800;
 
   background-image: linear-gradient(to left, #ffffff, #ffffff);
@@ -49,7 +72,6 @@
   font-size: 70px;
   font-weight: 600;
   background-image: linear-gradient(to left, #a8aaf6, #2160ff);
-  color: transparent;
   background-clip: text;
   -webkit-background-clip: text;
 
@@ -58,25 +80,18 @@
     0 4.4px 4.4px rgba(88, 77, 118, 0.241), 0 12px 12px rgba(93, 85, 85, 0.35);
 }
 
-.imgContainer {
-  flex: 1;
-  height: 600px;
-  width: 700px;
-  position: relative;
-  left: 600px;
-  bottom: 700px;
-}
-
 .btn-primary {
   background: #55d8f2;
   @extend .width-100;
   border: none;
   color: #fff;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  box-shadow: 0 0 5px rgba(192, 170, 170, 0.2);
   padding: 10px 30px 9px 30px;
   cursor: pointer;
   height: 45px;
   border-radius: 50px;
-  margin-top: 20px;
+  margin-top: 10px;
   font-family: "Caprasimo";
+  height: 38px;
 }
