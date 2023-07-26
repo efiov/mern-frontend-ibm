@@ -41,6 +41,7 @@ export default function User() {
 
   return (
     <TableContainer component={Paper}>
+      <Button onClick={() => window.location.reload(false)}>Click to reload!</Button>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
@@ -66,7 +67,7 @@ export default function User() {
                   </Button>
                 ) : (
                   <Button
-                    variant="outlined"
+                    variant="outlined" color="error"
                     onClick={() => updateRoleToAdmin(user._id)}
                   >
                     ADMIN
