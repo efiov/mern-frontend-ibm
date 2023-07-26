@@ -8,7 +8,7 @@ export default function Map({ events }) {
   const map = useRef(null);
   const [lng] = useState(21.225);
   const [lat] = useState(45.755);
-  const [zoom] = useState(13);
+  const [zoom] = useState(8);
   const [API_KEY] = useState("jQqzZEGiQunWVOX9bhaN");
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -23,17 +23,72 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { getCoordinatesFromAddress } from "../molecules/GetCoordinates";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 
 export default function BasicTable({ rows }) {
   const [openEvents, setOpenEvents] = useState({});
+  const [groups, setGroups] = useState([]);
   const [editingEventId, setEditingEventId] = useState(null);
   const [row, setrows] = useState();
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
+  const [selectedGroups, setSelectedGroups] = useState([]);
   const [editedEvent, setEditedEvent] = useState({
     name: "",
     date: new Date(),
     type: "",
     location: "",
+    longitude: "",
+    latitude: "",
   });
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+    setEditedEvent({ ...editedEvent, location: address });
+    setEditedEvent({
+      ...editedEvent,
+      longitude: coordinates ? coordinates.latitude : null,
+    });
+    setEditedEvent({
+      ...editedEvent,
+      latitude: coordinates ? coordinates.longitude : null,
+    });
+  };
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/getGroups");
+        const data = await response.json();
+        setGroups(data);
+      } catch (error) {
+        console.error("Failed to fetch groups:", error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
+  const handleGetCoordinates = async () => {
+    try {
+      const result = await getCoordinatesFromAddress(address);
+      setCoordinates(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleChipClick = (group) => {
+    setSelectedGroups((prevSelectedGroups) => {
+      if (prevSelectedGroups.includes(group._id)) {
+        return prevSelectedGroups.filter((id) => id !== group._id);
+      } else {
+        return [...prevSelectedGroups, group._id];
+      }
+    });
+  };
 
   const handleCloseEditDialog = (eventId) => {
     setOpenEvents((prevOpenEvents) => ({
@@ -44,6 +99,14 @@ export default function BasicTable({ rows }) {
 
   const handleConfirmChanges = async () => {
     try {
+      if (address) {
+        const coordinates = await getCoordinatesFromAddress(address);
+        setEditedEvent((prevEditedEvent) => ({
+          ...prevEditedEvent,
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+        }));
+      }
       await fetch(`http://localhost:3001/editEvent/${editingEventId}`, {
         method: "PUT",
         headers: {
@@ -54,6 +117,8 @@ export default function BasicTable({ rows }) {
           date: editedEvent.date,
           type: editedEvent.type,
           location: editedEvent.location,
+          longitude: editedEvent.longitude,
+          latitude: editedEvent.latitude,
         }),
       });
 
@@ -65,6 +130,8 @@ export default function BasicTable({ rows }) {
             date: editedEvent.date,
             type: editedEvent.type,
             location: editedEvent.location,
+            longitude: editedEvent.longitude,
+            latitude: editedEvent.latitude,
           };
         }
         return row;
@@ -89,6 +156,8 @@ export default function BasicTable({ rows }) {
       date: eventToEdit.date,
       type: eventToEdit.type,
       location: eventToEdit.location,
+      longitude: editedEvent.longitude,
+      latitude: editedEvent.latitude,
     });
     setOpenEvents((prevOpenEvents) => ({
       ...prevOpenEvents,
@@ -227,13 +296,44 @@ export default function BasicTable({ rows }) {
                 <DialogContentText>
                   Edit the location of the eveniment.
                 </DialogContentText>
-                <InputAtom
-                  type="text"
-                  value={editedEvent.location}
-                  onChange={(e) =>
-                    setEditedEvent({ ...editedEvent, location: e.target.value })
-                  }
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={handleAddressChange}
+                    placeholder="Enter address"
+                  />
+                  <button onClick={handleGetCoordinates}>
+                    Get Coordinates
+                  </button>
+                </div>
+              </DialogContent>
+              {coordinates && (
+                <DialogContent>
+                  <DialogContentText>Coordinates:</DialogContentText>
+                  <div>
+                    Latitude: {coordinates.latitude}, Longitude:{" "}
+                    {coordinates.longitude}
+                  </div>
+                </DialogContent>
+              )}
+
+              <DialogContent>
+                <DialogContentText>Select groups:</DialogContentText>
+                <Stack direction="row" spacing={1}>
+                  {groups.map((group) => (
+                    <Chip
+                      key={group._id}
+                      label={group.name}
+                      onClick={() => handleChipClick(group)}
+                      color={
+                        selectedGroups.includes(group._id)
+                          ? "primary"
+                          : "default"
+                      }
+                    />
+                  ))}
+                </Stack>
               </DialogContent>
 
               <DialogActions>
