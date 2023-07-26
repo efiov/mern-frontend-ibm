@@ -7,8 +7,6 @@ import Navbar from "../components/molecules/Navbar";
 import { redirect } from "next/navigation";
 import Admin from "../components/organisms/admin";
 import EventsList from "../components/organisms/EventsList";
-import Map from "../components/molecules/Map";
-import MapSearch from "../components/molecules/MapSearch";
 import React, { useState, useEffect } from "react";
 
 export default function Home() {
@@ -20,13 +18,9 @@ export default function Home() {
   });
 
   if (status === "loading") return <h1 className="loading">Loading ...</h1>;
-
   return (
     <main>
-      <Navbar user={session?.user} />
-
-      {/* <MapSearch /> */}
-
+      <Navbar />
       <div className="dashboard">
         {session?.user.role === "ADMIN" ? (
           <Admin />
