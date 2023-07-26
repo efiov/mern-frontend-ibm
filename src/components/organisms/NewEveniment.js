@@ -14,26 +14,46 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import EvenimentList from "./EvenimentList";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-
-// import SelectPlaces from "react-select-places";
-// import "react-select/dist/react-select.css";
+import { getCoordinatesFromAddress } from "../molecules/GetCoordinates";
 
 export default function NewEveniment() {
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
   const [open, setOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
-  // var SelectPlaces = require("react-select-places");
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedDate, setSelectedDate] = useState();
+  const [name, setName] = useState();
+  const [type, setType] = useState();
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+  };
+
+  const handleGetCoordinates = async () => {
+    try {
+      const result = await getCoordinatesFromAddress(address);
+      setCoordinates(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   const handleSubmit = async () => {
     const data = {
       name: name,
-      date: selectedDate,
       type: type,
-      location: location,
+      date: selectedDate,
+      selectedGroups: selectedGroups,
+      location: address,
+      latitude: coordinates ? coordinates.latitude : null,
+      longitude: coordinates ? coordinates.longitude : null,
     };
+    console.log(data);
     const JSONdata = JSON.stringify(data);
     const endpoint = "http://localhost:3001/createEvent";
     const options = {
@@ -61,7 +81,6 @@ export default function NewEveniment() {
       }
     });
   };
-
   //dialog buttons handlers
   const handleClickOpen = () => {
     setOpen(true);
@@ -70,11 +89,13 @@ export default function NewEveniment() {
     setName("");
     setSelectedDate("");
     setType("");
-    setLocation("");
     setOpen(false);
   };
 
-  //types of eveniment that can be selected from the backend menu
+  const handleMapSearchResult = (latitude, longitude) => {
+    setSelectedLocation({ lat: latitude, lng: longitude });
+  };
+
   const typesOfEveniment = [
     "Movie",
     "Theater",
@@ -89,7 +110,7 @@ export default function NewEveniment() {
       try {
         const response = await fetch("http://localhost:3001/getGroups");
         const data = await response.json();
-        setGroups(data); // Set the fetched groups in the state variable
+        setGroups(data);
       } catch (error) {
         console.error("Failed to fetch groups:", error);
       }
@@ -102,15 +123,10 @@ export default function NewEveniment() {
     return option.label === value.label;
   };
 
-  const [selectedDate, setSelectedDate] = useState();
-  const [name, setName] = useState();
-  const [type, setType] = useState();
-  const [location, setLocation] = useState();
-
-  //check if all fields are filled in
   const handleBlankFields = () => {
-    const isAnyFieldBlank = !name || !type || !location || !selectedDate;
+    const isAnyFieldBlank = !name || !type || !selectedDate;
     console.log(isAnyFieldBlank);
+    console.log(selectedLocation);
     return !isAnyFieldBlank;
   };
 
@@ -119,8 +135,9 @@ export default function NewEveniment() {
       <Button variant="contained" onClick={handleClickOpen}>
         New Event
       </Button>
+
       <div className="new-form">
-        <Dialog open={open} onClose={handleClose} fullWidth>
+        <Dialog open={open} onClose={handleClose} fullWidth zIndex={1000}>
           <div className="col-sm-7 bg-color align-self-center">
             <DialogTitle>New Eveniment</DialogTitle>
             <div className="form-group form-box">
@@ -131,7 +148,7 @@ export default function NewEveniment() {
                 <InputAtom
                   id="name"
                   label="Eveniment Name"
-                  onChange={(newValue) => setName(newValue)}
+                  onChange={(event) => setName(event.target.value)}
                   className="name-input"
                 />
               </DialogContent>
@@ -171,14 +188,38 @@ export default function NewEveniment() {
                 <DialogContentText>
                   Please enter the location of the eveniment.
                 </DialogContentText>
-                {/* <SelectPlaces onChange={logChange} /> */}
-                <InputAtom
-                  id="location"
-                  label="Location"
-                  onChange={(newValue) => setLocation(newValue)}
-                  className="location-input"
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={handleAddressChange}
+                    placeholder="Enter address"
+                  />
+                  <button onClick={handleGetCoordinates}>
+                    Get Coordinates
+                  </button>
+                </div>
               </DialogContent>
+              {coordinates && (
+                <DialogContent>
+                  <DialogContentText>Coordinates:</DialogContentText>
+                  <div>
+                    Latitude: {coordinates.latitude}, Longitude:{" "}
+                    {coordinates.longitude}
+                  </div>
+                </DialogContent>
+              )}
+
+              {/* <AddressAutofill accessToken={pk}>
+                    <input
+                      autoComplete="shipping address-line1"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                    />
+                  </AddressAutofill> */}
+              {/* <MapSearch /> */}
+              {/* <TestMap /> */}
+
               <DialogContent>
                 <DialogContentText>
                   Select all grups to invite

@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -23,17 +23,72 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { getCoordinatesFromAddress } from "../molecules/GetCoordinates";
+import Chip from "@mui/material/Chip";
+import Stack from "@mui/material/Stack";
 
 export default function BasicTable({ rows }) {
   const [openEvents, setOpenEvents] = useState({});
+  const [groups, setGroups] = useState([]);
   const [editingEventId, setEditingEventId] = useState(null);
-  const [row, setRows] = useState();
+  const [row, setrows] = useState();
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
+  const [selectedGroups, setSelectedGroups] = useState([]);
   const [editedEvent, setEditedEvent] = useState({
     name: "",
     date: new Date(),
     type: "",
     location: "",
+    longitude: "",
+    latitude: "",
   });
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+    setEditedEvent({ ...editedEvent, location: address });
+    setEditedEvent({
+      ...editedEvent,
+      longitude: coordinates ? coordinates.latitude : null,
+    });
+    setEditedEvent({
+      ...editedEvent,
+      latitude: coordinates ? coordinates.longitude : null,
+    });
+  };
+
+  useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/getGroups");
+        const data = await response.json();
+        setGroups(data);
+      } catch (error) {
+        console.error("Failed to fetch groups:", error);
+      }
+    };
+
+    fetchGroups();
+  }, []);
+
+  const handleGetCoordinates = async () => {
+    try {
+      const result = await getCoordinatesFromAddress(address);
+      setCoordinates(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
+  const handleChipClick = (group) => {
+    setSelectedGroups((prevSelectedGroups) => {
+      if (prevSelectedGroups.includes(group._id)) {
+        return prevSelectedGroups.filter((id) => id !== group._id);
+      } else {
+        return [...prevSelectedGroups, group._id];
+      }
+    });
+  };
 
   const handleCloseEditDialog = (eventId) => {
     setOpenEvents((prevOpenEvents) => ({
@@ -44,6 +99,14 @@ export default function BasicTable({ rows }) {
 
   const handleConfirmChanges = async () => {
     try {
+      if (address) {
+        const coordinates = await getCoordinatesFromAddress(address);
+        setEditedEvent((prevEditedEvent) => ({
+          ...prevEditedEvent,
+          latitude: coordinates.latitude,
+          longitude: coordinates.longitude,
+        }));
+      }
       await fetch(`http://localhost:3001/editEvent/${editingEventId}`, {
         method: "PUT",
         headers: {
@@ -52,30 +115,30 @@ export default function BasicTable({ rows }) {
         body: JSON.stringify({
           name: editedEvent.name,
           date: editedEvent.date,
-          type: editedEvent.description,
+          type: editedEvent.type,
           location: editedEvent.location,
+          longitude: editedEvent.longitude,
+          latitude: editedEvent.latitude,
         }),
       });
 
-      // Assuming the response from the server returns the updated event object,
-      // we can find the corresponding event in the rows array and update it with the editedEvent data.
       const updatedRows = rows.map((row) => {
         if (row._id === editingEventId) {
           return {
             ...row,
             name: editedEvent.name,
             date: editedEvent.date,
-            type: editedEvent.description,
+            type: editedEvent.type,
             location: editedEvent.location,
+            longitude: editedEvent.longitude,
+            latitude: editedEvent.latitude,
           };
         }
         return row;
       });
 
-      // Update the state with the updated rows
-      setRows(updatedRows);
+      setrows(updatedRows);
 
-      // Close the edit dialog
       setOpenEvents((prevOpenEvents) => ({
         ...prevOpenEvents,
         [editingEventId]: false,
@@ -91,8 +154,10 @@ export default function BasicTable({ rows }) {
     setEditedEvent({
       name: eventToEdit.name,
       date: eventToEdit.date,
-      type: eventToEdit.description,
+      type: eventToEdit.type,
       location: eventToEdit.location,
+      longitude: editedEvent.longitude,
+      latitude: editedEvent.latitude,
     });
     setOpenEvents((prevOpenEvents) => ({
       ...prevOpenEvents,
@@ -120,7 +185,7 @@ export default function BasicTable({ rows }) {
 
   return (
     <div>
-      <TableContainer component={Paper} setRows={setRows}>
+      <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -134,6 +199,9 @@ export default function BasicTable({ rows }) {
                 Location
               </TableCell>
               <TableCell variant="head" align="center">
+                Date
+              </TableCell>
+              <TableCell variant="head" align="center">
                 Groups
               </TableCell>
               <TableCell variant="head" align="center">
@@ -145,8 +213,11 @@ export default function BasicTable({ rows }) {
             {rows.map((row) => (
               <TableRow key={row._id}>
                 <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.description}</TableCell>
+                <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.location}</TableCell>
+                <TableCell align="center">
+                  {dayjs(row.date).format("HH:mm    DD/MM/YY")}
+                </TableCell>
                 <TableCell align="center">{row.groups}</TableCell>
                 <TableCell align="center">
                   <Tooltip title="Edit" onClick={() => handleEdit(row._id)}>
@@ -215,7 +286,7 @@ export default function BasicTable({ rows }) {
                   onChange={(e) =>
                     setEditedEvent({
                       ...editedEvent,
-                      description: e.target.value,
+                      type: e.target.value,
                     })
                   }
                 />
@@ -225,13 +296,44 @@ export default function BasicTable({ rows }) {
                 <DialogContentText>
                   Edit the location of the eveniment.
                 </DialogContentText>
-                <InputAtom
-                  type="text"
-                  value={editedEvent.location}
-                  onChange={(e) =>
-                    setEditedEvent({ ...editedEvent, location: e.target.value })
-                  }
-                />
+                <div>
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={handleAddressChange}
+                    placeholder="Enter address"
+                  />
+                  <button onClick={handleGetCoordinates}>
+                    Get Coordinates
+                  </button>
+                </div>
+              </DialogContent>
+              {coordinates && (
+                <DialogContent>
+                  <DialogContentText>Coordinates:</DialogContentText>
+                  <div>
+                    Latitude: {coordinates.latitude}, Longitude:{" "}
+                    {coordinates.longitude}
+                  </div>
+                </DialogContent>
+              )}
+
+              <DialogContent>
+                <DialogContentText>Select groups:</DialogContentText>
+                <Stack direction="row" spacing={1}>
+                  {groups.map((group) => (
+                    <Chip
+                      key={group._id}
+                      label={group.name}
+                      onClick={() => handleChipClick(group)}
+                      color={
+                        selectedGroups.includes(group._id)
+                          ? "primary"
+                          : "default"
+                      }
+                    />
+                  ))}
+                </Stack>
               </DialogContent>
 
               <DialogActions>

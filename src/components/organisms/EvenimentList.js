@@ -2,11 +2,12 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import ButtonAtom from "../atoms/Button";
 import TableList from "./TableList";
+import Map from "../molecules/Map";
 
 export default function EvenimentList() {
   const [eventList, setEventList] = useState([]);
   const [sortType, setSortType] = useState("");
-
+  const [events, setEvents] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -37,9 +38,23 @@ export default function EvenimentList() {
       return 0;
     }
   });
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await fetch("http://localhost:3001/getEvents");
+        const data = await response.json();
+        setEvents(data);
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   return (
     <div>
+      {events.length > 0 && <Map events={events} />}
       <div>
         <ButtonAtom
           onClick={() => handleSortType("date")}
