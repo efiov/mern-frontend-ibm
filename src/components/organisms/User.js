@@ -31,17 +31,18 @@ export default function User() {
     axios.post("http://localhost:3001/updateRoleToAdmin", {
       id: id,
     });
+    window.location.reload(false)
   };
 
   const updateRoleToUser = (id) => {
     axios.post("http://localhost:3001/updateRoleToUser", {
       id: id,
     });
+    window.location.reload(false)
   };
 
   return (
     <TableContainer component={Paper}>
-      <Button onClick={() => window.location.reload(false)}>Click to reload!</Button>
       <Table sx={{ minWidth: 650 }}>
         <TableHead>
           <TableRow>
