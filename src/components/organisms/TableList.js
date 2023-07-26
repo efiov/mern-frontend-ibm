@@ -23,7 +23,6 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 
 export default function BasicTable({ rows }) {
   const [openEvents, setOpenEvents] = useState({});
@@ -58,8 +57,6 @@ export default function BasicTable({ rows }) {
         }),
       });
 
-      // Assuming the response from the server returns the updated event object,
-      // we can find the corresponding event in the rows array and update it with the editedEvent data.
       const updatedRows = rows.map((row) => {
         if (row._id === editingEventId) {
           return {
@@ -73,7 +70,8 @@ export default function BasicTable({ rows }) {
         return row;
       });
 
-      // Close the edit dialog
+      setrows(updatedRows);
+
       setOpenEvents((prevOpenEvents) => ({
         ...prevOpenEvents,
         [editingEventId]: false,

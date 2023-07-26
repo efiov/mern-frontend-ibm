@@ -14,12 +14,14 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import MapSearch from "../molecules/MapSearch";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
+import { getCoordinatesFromAddress } from "../molecules/GetCoordinates";
 
 export default function NewEveniment() {
+  const [address, setAddress] = useState("");
+  const [coordinates, setCoordinates] = useState(null);
   const [open, setOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
@@ -27,16 +29,29 @@ export default function NewEveniment() {
   const [selectedDate, setSelectedDate] = useState();
   const [name, setName] = useState();
   const [type, setType] = useState();
-  console.log(selectedLocation);
-  // var SelectPlaces = require("react-select-places");
+
+  const handleAddressChange = (event) => {
+    setAddress(event.target.value);
+  };
+
+  const handleGetCoordinates = async () => {
+    try {
+      const result = await getCoordinatesFromAddress(address);
+      setCoordinates(result);
+    } catch (error) {
+      console.error(error.message);
+    }
+  };
+
   const handleSubmit = async () => {
     const data = {
       name: name,
       type: type,
       date: selectedDate,
       selectedGroups: selectedGroups,
-      latitude: selectedLocation?.lat, // Access latitude from selectedLocation object
-      longitude: selectedLocation?.lng, // The longitude value received from MapSearch
+      location: address,
+      latitude: coordinates ? coordinates.latitude : null,
+      longitude: coordinates ? coordinates.longitude : null,
     };
     console.log(data);
     const JSONdata = JSON.stringify(data);
@@ -81,7 +96,6 @@ export default function NewEveniment() {
     setSelectedLocation({ lat: latitude, lng: longitude });
   };
 
-  //types of eveniment that can be selected from the backend menu
   const typesOfEveniment = [
     "Movie",
     "Theater",
@@ -96,7 +110,7 @@ export default function NewEveniment() {
       try {
         const response = await fetch("http://localhost:3001/getGroups");
         const data = await response.json();
-        setGroups(data); // Set the fetched groups in the state variable
+        setGroups(data);
       } catch (error) {
         console.error("Failed to fetch groups:", error);
       }
@@ -109,7 +123,6 @@ export default function NewEveniment() {
     return option.label === value.label;
   };
 
-  //check if all fields are filled in
   const handleBlankFields = () => {
     const isAnyFieldBlank = !name || !type || !selectedDate;
     console.log(isAnyFieldBlank);
@@ -122,6 +135,7 @@ export default function NewEveniment() {
       <Button variant="contained" onClick={handleClickOpen}>
         New Event
       </Button>
+
       <div className="new-form">
         <Dialog open={open} onClose={handleClose} fullWidth zIndex={1000}>
           <div className="col-sm-7 bg-color align-self-center">
@@ -175,9 +189,37 @@ export default function NewEveniment() {
                   Please enter the location of the eveniment.
                 </DialogContentText>
                 <div>
-                  <MapSearch />
+                  <input
+                    type="text"
+                    value={address}
+                    onChange={handleAddressChange}
+                    placeholder="Enter address"
+                  />
+                  <button onClick={handleGetCoordinates}>
+                    Get Coordinates
+                  </button>
                 </div>
               </DialogContent>
+              {coordinates && (
+                <DialogContent>
+                  <DialogContentText>Coordinates:</DialogContentText>
+                  <div>
+                    Latitude: {coordinates.latitude}, Longitude:{" "}
+                    {coordinates.longitude}
+                  </div>
+                </DialogContent>
+              )}
+
+              {/* <AddressAutofill accessToken={pk}>
+                    <input
+                      autoComplete="shipping address-line1"
+                      value={location}
+                      onChange={(e) => setLocation(e.target.value)}
+                    />
+                  </AddressAutofill> */}
+              {/* <MapSearch /> */}
+              {/* <TestMap /> */}
+
               <DialogContent>
                 <DialogContentText>
                   Select all grups to invite

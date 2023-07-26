@@ -1,9 +1,14 @@
 .map-wrap {
   position: relative;
-  width: 100%;
+  width: 95%;
   height: calc(
     50vh - 77px
   ); /* calculate height of the screen minus the heading */
+}
+.row {
+  display: flex;
+  justify-content: center; /* Center the items horizontally */
+  /* Center the items vertically */ /* Adjust the height of the row as needed */
 }
 
 .map {
