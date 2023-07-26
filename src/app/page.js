@@ -7,6 +7,7 @@ import Navbar from "../components/molecules/Navbar";
 import { redirect } from "next/navigation";
 import Admin from "../components/organisms/admin";
 import EventsList from "../components/organisms/EventsList";
+import Map from "../components/molecules/Map";
 
 export default function Home() {
   const { data: session, status } = useSession({
@@ -16,14 +17,18 @@ export default function Home() {
     },
   });
   if (status === "loading") return <h1 className="loading">Loading ...</h1>;
-console.log(session.user);
+  console.log(session.user);
   return (
     <main>
       <Navbar user={session?.user} />
-      
+      <Map />
+
       <div className="dashboard">
-        
-        {session?.user.role === "ADMIN" ? <Admin /> : <EventsList email={session.user.email}/>}
+        {session?.user.role === "ADMIN" ? (
+          <Admin />
+        ) : (
+          <EventsList email={session.user.email} />
+        )}
       </div>
     </main>
   );

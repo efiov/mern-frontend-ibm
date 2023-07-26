@@ -14,26 +14,31 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import "bootstrap/dist/css/bootstrap.css";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import EvenimentList from "./EvenimentList";
+import MapSearch from "../molecules/MapSearch";
 import Chip from "@mui/material/Chip";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
-
-// import SelectPlaces from "react-select-places";
-// import "react-select/dist/react-select.css";
 
 export default function NewEveniment() {
   const [open, setOpen] = useState(false);
   const [groups, setGroups] = useState([]);
   const [selectedGroups, setSelectedGroups] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedDate, setSelectedDate] = useState();
+  const [name, setName] = useState();
+  const [type, setType] = useState();
+  console.log(selectedLocation);
   // var SelectPlaces = require("react-select-places");
   const handleSubmit = async () => {
     const data = {
       name: name,
-      date: selectedDate,
       type: type,
-      location: location,
+      date: selectedDate,
+      selectedGroups: selectedGroups,
+      latitude: selectedLocation?.lat, // Access latitude from selectedLocation object
+      longitude: selectedLocation?.lng, // The longitude value received from MapSearch
     };
+    console.log(data);
     const JSONdata = JSON.stringify(data);
     const endpoint = "http://localhost:3001/createEvent";
     const options = {
@@ -61,7 +66,6 @@ export default function NewEveniment() {
       }
     });
   };
-
   //dialog buttons handlers
   const handleClickOpen = () => {
     setOpen(true);
@@ -70,8 +74,11 @@ export default function NewEveniment() {
     setName("");
     setSelectedDate("");
     setType("");
-    setLocation("");
     setOpen(false);
+  };
+
+  const handleMapSearchResult = (latitude, longitude) => {
+    setSelectedLocation({ lat: latitude, lng: longitude });
   };
 
   //types of eveniment that can be selected from the backend menu
@@ -102,15 +109,11 @@ export default function NewEveniment() {
     return option.label === value.label;
   };
 
-  const [selectedDate, setSelectedDate] = useState();
-  const [name, setName] = useState();
-  const [type, setType] = useState();
-  const [location, setLocation] = useState();
-
   //check if all fields are filled in
   const handleBlankFields = () => {
-    const isAnyFieldBlank = !name || !type || !location || !selectedDate;
+    const isAnyFieldBlank = !name || !type || !selectedDate;
     console.log(isAnyFieldBlank);
+    console.log(selectedLocation);
     return !isAnyFieldBlank;
   };
 
@@ -120,7 +123,7 @@ export default function NewEveniment() {
         New Event
       </Button>
       <div className="new-form">
-        <Dialog open={open} onClose={handleClose} fullWidth>
+        <Dialog open={open} onClose={handleClose} fullWidth zIndex={1000}>
           <div className="col-sm-7 bg-color align-self-center">
             <DialogTitle>New Eveniment</DialogTitle>
             <div className="form-group form-box">
@@ -131,7 +134,7 @@ export default function NewEveniment() {
                 <InputAtom
                   id="name"
                   label="Eveniment Name"
-                  onChange={(newValue) => setName(newValue)}
+                  onChange={(event) => setName(event.target.value)}
                   className="name-input"
                 />
               </DialogContent>
@@ -171,13 +174,9 @@ export default function NewEveniment() {
                 <DialogContentText>
                   Please enter the location of the eveniment.
                 </DialogContentText>
-                {/* <SelectPlaces onChange={logChange} /> */}
-                <InputAtom
-                  id="location"
-                  label="Location"
-                  onChange={(newValue) => setLocation(newValue)}
-                  className="location-input"
-                />
+                <div>
+                  <MapSearch />
+                </div>
               </DialogContent>
               <DialogContent>
                 <DialogContentText>

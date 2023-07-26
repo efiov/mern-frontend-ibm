@@ -23,11 +23,12 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 export default function BasicTable({ rows }) {
   const [openEvents, setOpenEvents] = useState({});
   const [editingEventId, setEditingEventId] = useState(null);
-  const [row, setRows] = useState();
+  const [row, setrows] = useState();
   const [editedEvent, setEditedEvent] = useState({
     name: "",
     date: new Date(),
@@ -52,7 +53,7 @@ export default function BasicTable({ rows }) {
         body: JSON.stringify({
           name: editedEvent.name,
           date: editedEvent.date,
-          type: editedEvent.description,
+          type: editedEvent.type,
           location: editedEvent.location,
         }),
       });
@@ -65,15 +66,12 @@ export default function BasicTable({ rows }) {
             ...row,
             name: editedEvent.name,
             date: editedEvent.date,
-            type: editedEvent.description,
+            type: editedEvent.type,
             location: editedEvent.location,
           };
         }
         return row;
       });
-
-      // Update the state with the updated rows
-      setRows(updatedRows);
 
       // Close the edit dialog
       setOpenEvents((prevOpenEvents) => ({
@@ -91,7 +89,7 @@ export default function BasicTable({ rows }) {
     setEditedEvent({
       name: eventToEdit.name,
       date: eventToEdit.date,
-      type: eventToEdit.description,
+      type: eventToEdit.type,
       location: eventToEdit.location,
     });
     setOpenEvents((prevOpenEvents) => ({
@@ -120,7 +118,7 @@ export default function BasicTable({ rows }) {
 
   return (
     <div>
-      <TableContainer component={Paper} setRows={setRows}>
+      <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -134,6 +132,9 @@ export default function BasicTable({ rows }) {
                 Location
               </TableCell>
               <TableCell variant="head" align="center">
+                Date
+              </TableCell>
+              <TableCell variant="head" align="center">
                 Groups
               </TableCell>
               <TableCell variant="head" align="center">
@@ -145,8 +146,11 @@ export default function BasicTable({ rows }) {
             {rows.map((row) => (
               <TableRow key={row._id}>
                 <TableCell align="center">{row.name}</TableCell>
-                <TableCell align="center">{row.description}</TableCell>
+                <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.location}</TableCell>
+                <TableCell align="center">
+                  {dayjs(row.date).format("HH:mm    DD/MM/YY")}
+                </TableCell>
                 <TableCell align="center">{row.groups}</TableCell>
                 <TableCell align="center">
                   <Tooltip title="Edit" onClick={() => handleEdit(row._id)}>
@@ -215,7 +219,7 @@ export default function BasicTable({ rows }) {
                   onChange={(e) =>
                     setEditedEvent({
                       ...editedEvent,
-                      description: e.target.value,
+                      type: e.target.value,
                     })
                   }
                 />
