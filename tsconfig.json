@@ -32,7 +32,7 @@
     "src/components/atoms/Input.js",
     "src/app/(admin_route)/admin/page.js",
     "src/components/organisms/Navbar.jsx"
-, "src/app/api/auth/[...nextauth]/route.jsx", "src/components/molecules/Navbar.tsx", "src/app/dashuser/page.jsx", "src/app/api/auth/[...nextauth]/route.js", "src/app/dashadmin/page.js", "src/app/api/route.js", "src/app/invite/page.js"  ],
+, "src/app/api/auth/[...nextauth]/route.jsx", "src/components/molecules/Navbar.tsx", "src/app/dashuser/page.jsx", "src/app/api/auth/[...nextauth]/route.js", "src/app/dashadmin/page.js", "src/app/api/route.js", "src/app/invite/page.js", "src/components/organisms/User.tsc"  ],
   "exclude": [
     "node_modules"
   ]

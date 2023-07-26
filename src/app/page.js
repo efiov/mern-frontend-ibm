@@ -16,14 +16,17 @@ export default function Home() {
     },
   });
   if (status === "loading") return <h1 className="loading">Loading ...</h1>;
-console.log(session.user);
+  console.log(session.user);
   return (
     <main>
-      <Navbar user={session?.user} />
-      
+      <Navbar />
+
       <div className="dashboard">
-        
-        {session?.user.role === "ADMIN" ? <Admin /> : <EventsList email={session.user.email}/>}
+        {session?.user.role === "ADMIN" ? (
+          <Admin />
+        ) : (
+          <EventsList email={session.user.email} />
+        )}
       </div>
     </main>
   );

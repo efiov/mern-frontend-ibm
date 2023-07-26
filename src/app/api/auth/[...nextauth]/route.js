@@ -57,14 +57,45 @@ export const authOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
+    async jwt({ token, user, session, trigger }) {
+      if (trigger === "update" && session?.name) {
+        token.name = session.name;
+        token.email = session.email;
       }
+
+      if (user) {
+        return {
+          ...token,
+          id: user.id,
+          role: user.role,
+          email: user.email,
+        };
+      }
+      const newUser = await prisma.user.update({
+        where: {
+          id: token.id,
+        },
+        data: {
+          name: token.name,
+          email: token.email,
+        },
+      });
+      console.log(newUser);
       return token;
     },
-    async session({ session, token }) {
-      if (session?.user) session.user.role = token.role;
+    async session({ session, token, user }) {
+      if (session) {
+        return {
+          ...session,
+          user: {
+            ...session.user,
+            id: token.id,
+            role: token.role,
+            name: token.name,
+            email: token.email,
+          },
+        };
+      }
       return session;
     },
   },
