@@ -348,7 +348,7 @@ export default function GroupsPage() {
               <div
                 key={index}
                 style={{
-                  width: "250px",
+                  width: "350px",
                   flexDirection: "column",
                   boxShadow: "0px 1px 6px 2px lightgray",
                   padding: "10px",
