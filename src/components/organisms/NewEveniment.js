@@ -147,6 +147,7 @@ export default function NewEveniment() {
                 </DialogContentText>
                 <InputAtom
                   id="name"
+                  variant="filled"
                   label="Eveniment Name"
                   onChange={(event) => setName(event.target.value)}
                   className="name-input"
@@ -220,10 +221,8 @@ export default function NewEveniment() {
               {/* <MapSearch /> */}
               {/* <TestMap /> */}
 
+              <DialogContentText>Select all grups to invite</DialogContentText>
               <DialogContent>
-                <DialogContentText>
-                  Select all grups to invite
-                </DialogContentText>
                 <Stack direction="row" spacing={1}>
                   {groups.map((group) => (
                     <Chip

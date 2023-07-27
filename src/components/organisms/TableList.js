@@ -42,7 +42,34 @@ export default function BasicTable({ rows }) {
     location: "",
     longitude: "",
     latitude: "",
+    groups: [""],
   });
+
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const toDate = (jsonDate) => {
+    const dateObject = new Date(jsonDate);
+    const day = dateObject.getDate();
+    const monthName = months[dateObject.getMonth()]; // Get the month name from the 'months' array
+    const year = dateObject.getFullYear();
+    const formattedDate = `${day
+      .toString()
+      .padStart(2, "0")} ${monthName} ${year}`;
+    return formattedDate;
+  };
 
   const handleAddressChange = (event) => {
     setAddress(event.target.value);
@@ -57,6 +84,16 @@ export default function BasicTable({ rows }) {
     });
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch("http://localhost:3001/getEvents");
+      const data = await response.json();
+      setRows(data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchGroups = async () => {
       try {
@@ -69,6 +106,7 @@ export default function BasicTable({ rows }) {
     };
 
     fetchGroups();
+    fetchData();
   }, []);
 
   const handleGetCoordinates = async () => {
@@ -119,6 +157,7 @@ export default function BasicTable({ rows }) {
           location: editedEvent.location,
           longitude: editedEvent.longitude,
           latitude: editedEvent.latitude,
+          groups: selectedGroups,
         }),
       });
 
@@ -132,6 +171,7 @@ export default function BasicTable({ rows }) {
             location: editedEvent.location,
             longitude: editedEvent.longitude,
             latitude: editedEvent.latitude,
+            groups: selectedGroups,
           };
         }
         return row;
@@ -143,6 +183,7 @@ export default function BasicTable({ rows }) {
         ...prevOpenEvents,
         [editingEventId]: false,
       }));
+      fetchData();
     } catch (error) {
       console.error("Error editing event:", error);
     }
@@ -151,6 +192,7 @@ export default function BasicTable({ rows }) {
   const handleEdit = (eventId) => {
     setEditingEventId(eventId);
     const eventToEdit = rows.find((event) => event._id === eventId);
+    setSelectedGroups(eventToEdit.groups);
     setEditedEvent({
       name: eventToEdit.name,
       date: eventToEdit.date,
@@ -216,9 +258,17 @@ export default function BasicTable({ rows }) {
                 <TableCell align="center">{row.type}</TableCell>
                 <TableCell align="center">{row.location}</TableCell>
                 <TableCell align="center">
-                  {dayjs(row.date).format("HH:mm    DD/MM/YY")}
+                  {dayjs(row.date).format("DD/MM/YY")}
                 </TableCell>
-                <TableCell align="center">{row.groups}</TableCell>
+                <TableCell align="center">
+                  {row.groups.map((groupId, index) => {
+                    const group = groups.find((group) => group._id === groupId);
+                    if (group) {
+                      return <Chip key={groupId} label={group.name} />;
+                    }
+                    return null;
+                  })}
+                </TableCell>
                 <TableCell align="center">
                   <Tooltip title="Edit" onClick={() => handleEdit(row._id)}>
                     <IconButton>
