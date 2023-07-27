@@ -4,29 +4,24 @@
   list-style: none;
   margin: 2rem;
   padding: 0;
-
-  margin-right: 900px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .list li {
   margin: 1rem 0;
   width: 400px;
   height: 180px;
-  border: 1px solid #ffffff;
-  background-color: #ffffff#eceffc;
+  background-color: #fcfcfc;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px 80px;
-  color: white;
-  background: linear-gradient(
-    90deg,
-    rgb(52, 49, 216) 0%,
-    rgb(73, 100, 211) 21%,
-    rgb(134, 80, 222) 52%,
-    rgba(118, 197, 244, 0.683) 100%
-  );
+  color: #424242;
+
   border-radius: 5px;
   box-shadow: 0 0.4px 0.4px rgba(128, 128, 128, 0.109),
     0 1px 1px rgba(31, 27, 27, 0.155), 0 2.1px 2.1px rgba(128, 128, 128, 0.195),
@@ -37,9 +32,7 @@
   font-size: 26px;
   font-variant: small-caps;
   font-weight: 800;
-
-  background-image: linear-gradient(to left, #ffffff, #ffffff);
-  color: transparent;
+  color: #424242;
   background-clip: text;
   -webkit-background-clip: text;
 }
