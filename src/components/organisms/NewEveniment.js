@@ -177,7 +177,7 @@ export default function NewEveniment() {
                   disablePortal
                   id="type"
                   options={typesOfEveniment}
-                  sx={{ width: 300 }}
+                  sx={{ width: 200}}
                   renderInput={(params) => (
                     <TextField {...params} label="Movie" />
                   )}
@@ -210,16 +210,6 @@ export default function NewEveniment() {
                   </div>
                 </DialogContent>
               )}
-
-              {/* <AddressAutofill accessToken={pk}>
-                    <input
-                      autoComplete="shipping address-line1"
-                      value={location}
-                      onChange={(e) => setLocation(e.target.value)}
-                    />
-                  </AddressAutofill> */}
-              {/* <MapSearch /> */}
-              {/* <TestMap /> */}
 
               <DialogContentText>Select all grups to invite</DialogContentText>
               <DialogContent>
